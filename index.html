@@ -8,731 +8,539 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"IBM Plex Sans",sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh;font-size:13px}
-#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 20% 50%,#0f2a4a 0%,#0f1117 60%)}
-.login-card{background:#1e2430;border:1px solid #2d3748;border-radius:16px;padding:36px 32px;width:100%;max-width:380px;text-align:center}
-.login-logo{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#7dd3fc;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
-.login-sub{font-size:11px;color:#475569;margin-bottom:28px}
-.login-card h2{font-size:18px;font-weight:600;color:#e2e8f0;margin-bottom:6px}
-.login-desc{font-size:12px;color:#64748b;margin-bottom:20px}
-.linput{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:11px 13px;border-radius:8px;font-size:14px;width:100%;margin-bottom:14px;letter-spacing:2px;transition:border-color .15s}
+#ls{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 20% 50%,#0f2a4a 0%,#0f1117 60%)}
+.lcard{background:#1e2430;border:1px solid #2d3748;border-radius:16px;padding:36px 32px;width:100%;max-width:380px;text-align:center}
+.llogo{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:#7dd3fc;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.lsub{font-size:11px;color:#475569;margin-bottom:28px}
+.lcard h2{font-size:18px;font-weight:600;color:#e2e8f0;margin-bottom:6px}
+.ldesc{font-size:12px;color:#64748b;margin-bottom:20px}
+.linput{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:11px 13px;border-radius:8px;font-size:16px;width:100%;margin-bottom:14px;transition:border-color .15s;-webkit-text-security:disc}
 .linput:focus{outline:none;border-color:#3b82f6}
-.btn-login{width:100%;padding:11px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
-.btn-login:hover{background:#1e40af}
+.lbtn{width:100%;padding:11px;background:#1d4ed8;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+.lbtn:hover{background:#1e40af}
 .lerr{background:#2a0a0a;color:#f87171;border:1px solid #7f1d1d;border-radius:6px;padding:8px 12px;font-size:11px;margin-top:10px;display:none}
-.app-wrap{padding:14px;display:none}
-.topbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
-.app-title{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:#7dd3fc;letter-spacing:1px;text-transform:uppercase}
-.app-sub{font-size:10px;color:#475569;font-family:"IBM Plex Mono",monospace;margin-top:2px}
+.aw{padding:14px;display:none}
+.tb{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.at{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:#7dd3fc;letter-spacing:1px;text-transform:uppercase}
+.as{font-size:10px;color:#475569;margin-top:2px}
 .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-bottom:14px}
 .kpi{background:#1e2430;border:1px solid #2d3748;border-radius:8px;padding:9px 10px;text-align:center}
-.kpi .num{font-size:22px;font-weight:600;font-family:"IBM Plex Mono",monospace;line-height:1.1}
-.kpi .lbl{font-size:9px;color:#64748b;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
-.kpi.green .num{color:#4ade80}.kpi.yellow .num{color:#facc15}.kpi.red .num{color:#f87171}
-.kpi.orange .num{color:#fb923c}.kpi.purple .num{color:#c084fc}.kpi.blue .num{color:#60a5fa}
+.kpi .n{font-size:22px;font-weight:600;font-family:"IBM Plex Mono",monospace;line-height:1.1}
+.kpi .l{font-size:9px;color:#64748b;margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+.kpi.gr .n{color:#4ade80}.kpi.ye .n{color:#facc15}.kpi.re .n{color:#f87171}
+.kpi.or .n{color:#fb923c}.kpi.pu .n{color:#c084fc}.kpi.bl .n{color:#60a5fa}
 .tabs{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}
 .tab{padding:6px 13px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid #2d3748;background:#1e2430;color:#64748b;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
 .tab.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
 .tab:hover:not(.active){background:#252d3d;color:#e2e8f0}
-.section{display:none}.section.active{display:block}
-.panel{background:#1e2430;border:1px solid #2d3748;border-radius:10px;overflow:hidden;margin-bottom:12px}
-.phdr{display:flex;align-items:center;gap:7px;padding:9px 13px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #2d3748;flex-wrap:wrap}
-.pbody{padding:12px}
+.sec{display:none}.sec.active{display:block}
+.pnl{background:#1e2430;border:1px solid #2d3748;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.ph{display:flex;align-items:center;gap:7px;padding:9px 13px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #2d3748;flex-wrap:wrap}
+.pb{padding:12px}
 .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.alert-row{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:6px;margin-bottom:6px;font-size:12px;line-height:1.5}
-.arow-icon{font-size:13px;flex-shrink:0;margin-top:1px}.arow-info{flex:1}.arow-info strong{display:block;margin-bottom:2px}
-.arow-badge{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;flex-shrink:0}
-.ay{background:#2a2500;border:1px solid #713f12}.ay strong{color:#fde68a}.ay p{color:#a16207}.ay .arow-badge{background:#713f12;color:#fde68a}
-.ao{background:#2a1500;border:1px solid #7c2d12}.ao strong{color:#fed7aa}.ao p{color:#c2410c}.ao .arow-badge{background:#7c2d12;color:#fed7aa}
-.ar{background:#2a0a0a;border:1px solid #7f1d1d}.ar strong{color:#fca5a5}.ar p{color:#b91c1c}.ar .arow-badge{background:#7f1d1d;color:#fca5a5}
-.ap{background:#1a0a2a;border:1px solid #6b21a8}.ap strong{color:#d8b4fe}.ap p{color:#7e22ce}.ap .arow-badge{background:#6b21a8;color:#d8b4fe}
-.ag{background:#052e16;border:1px solid #166534}.ag strong{color:#bbf7d0}.ag p{color:#15803d}.ag .arow-badge{background:#166534;color:#bbf7d0}
+.ar{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:6px;margin-bottom:6px;font-size:12px;line-height:1.5}
+.ai{font-size:13px;flex-shrink:0;margin-top:1px}.ainfo{flex:1}.ainfo strong{display:block;margin-bottom:2px}
+.ab{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;padding:2px 7px;border-radius:4px;flex-shrink:0}
+.ay{background:#2a2500;border:1px solid #713f12}.ay strong{color:#fde68a}.ay p{color:#a16207}.ay .ab{background:#713f12;color:#fde68a}
+.ao{background:#2a1500;border:1px solid #7c2d12}.ao strong{color:#fed7aa}.ao p{color:#c2410c}.ao .ab{background:#7c2d12;color:#fed7aa}
+.are{background:#2a0a0a;border:1px solid #7f1d1d}.are strong{color:#fca5a5}.are p{color:#b91c1c}.are .ab{background:#7f1d1d;color:#fca5a5}
+.ap{background:#1a0a2a;border:1px solid #6b21a8}.ap strong{color:#d8b4fe}.ap p{color:#7e22ce}.ap .ab{background:#6b21a8;color:#d8b4fe}
+.ag{background:#052e16;border:1px solid #166534}.ag strong{color:#bbf7d0}.ag p{color:#15803d}.ag .ab{background:#166534;color:#bbf7d0}
 table{width:100%;border-collapse:collapse;font-size:11px}
 thead th{padding:6px 8px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.4px;color:#64748b;border-bottom:1px solid #2d3748;font-weight:600;white-space:nowrap;background:#161e2e;position:sticky;top:0}
 tbody tr{border-bottom:1px solid #151e2e}
 tbody tr:hover{background:#1e2840}
 tbody td{padding:5px 7px;vertical-align:middle}
-.badge{display:inline-flex;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+.bd{display:inline-flex;font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
 .bg{background:#052e16;color:#4ade80;border:1px solid #166534}
 .br{background:#2a0a0a;color:#f87171;border:1px solid #7f1d1d}
 .by{background:#2a2000;color:#facc15;border:1px solid #713f12}
 .bb{background:#1e2a4a;color:#93c5fd;border:1px solid #1d4ed8}
 .bc{background:#1a0a2a;color:#c084fc;border:1px solid #6b21a8}
-.eff-bar{height:6px;border-radius:3px;background:#1e2a40;overflow:hidden}
-.eff-fill{height:100%;border-radius:3px;transition:width .4s}
-.total-row td{font-weight:600;color:#7dd3fc;border-top:2px solid #2d3748!important}
+.eb{height:6px;border-radius:3px;background:#1e2a40;overflow:hidden}
+.ef{height:100%;border-radius:3px;transition:width .4s}
+.tr td{font-weight:600;color:#7dd3fc;border-top:2px solid #2d3748!important}
 select{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:4px 7px;border-radius:5px;font-size:11px;cursor:pointer}
-input[type=text],input[type=number],input[type=date],input[type=password]{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:7px 9px;border-radius:6px;font-size:12px;font-family:"IBM Plex Sans",sans-serif;width:100%}
+input[type=text],input[type=number],input[type=date]{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:7px 9px;border-radius:6px;font-size:12px;font-family:"IBM Plex Sans",sans-serif;width:100%}
 select:focus,input:focus{outline:none;border-color:#3b82f6}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.scrollable{max-height:280px;overflow-y:auto}
+.sc{max-height:280px;overflow-y:auto}
 .btn{padding:7px 14px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:"IBM Plex Sans",sans-serif}
-.btn-p{background:#1d4ed8;color:#fff}.btn-g{background:#166534;color:#4ade80}
-.btn-out{background:#1e2430;border:1px solid #374151;color:#94a3b8}.btn-out:hover{background:#252d3d}
-.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.meta-card{background:#1e2430;border-radius:10px;padding:14px 16px;border:1px solid #2d3748}
-.meta-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:4px}
-.meta-nums{display:flex;align-items:baseline;gap:5px;margin-bottom:8px;flex-wrap:wrap}
-.meta-actual{font-size:26px;font-weight:700;font-family:"IBM Plex Mono",monospace;line-height:1}
-.meta-total{font-size:12px;color:#475569}
-.meta-pct{font-size:12px;font-weight:600;margin-left:auto}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fg{display:flex;flex-direction:column;gap:4px}
-.fg label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px}
-.fg input,.fg select{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:7px 9px;border-radius:6px;font-size:12px}
-.fsec{font-size:11px;font-weight:600;color:#7dd3fc;text-transform:uppercase;padding:6px 0 4px;border-bottom:1px solid #1e2a40;margin-bottom:8px;grid-column:1/-1}
-.msg-ok{background:#052e16;color:#4ade80;border:1px solid #166534;border-radius:6px;padding:8px 12px;font-size:11px;text-align:center;font-weight:500}
-.msg-err{background:#2a0a0a;color:#f87171;border:1px solid #7f1d1d;border-radius:6px;padding:8px 12px;font-size:11px;text-align:center;font-weight:500}
-.tip-box{border-radius:6px;padding:9px 11px;margin-top:6px;font-size:11px;line-height:1.7;grid-column:1/-1}
-.tip-esim{background:#0c1a2e;border:1px solid #0369a1}.tip-esim li{color:#7dd3fc}
-.tip-tienda{background:#1a1200;border:1px solid #92400e}.tip-tienda li{color:#fde68a}
-.tip-domicilio{background:#1a0a2a;border:1px solid #7c3aed}.tip-domicilio li{color:#d8b4fe}
-.tip-box ul{padding-left:14px}
-.abd-warn{background:#1f0a0a;border:1px solid #ef4444;border-radius:6px;padding:7px 10px;font-size:11px;color:#fca5a5;margin-top:4px}
-.saving-indicator{position:fixed;bottom:16px;right:16px;background:#1d4ed8;color:#fff;padding:8px 14px;border-radius:8px;font-size:11px;font-weight:600;display:none;z-index:999}
-.spinner{display:inline-block;width:14px;height:14px;border:2px solid #ffffff40;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-full{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#64748b}
+.btg{background:#166534;color:#4ade80}.bto{background:#1e2430;border:1px solid #374151;color:#94a3b8}
+.bto:hover{background:#252d3d}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mc{background:#1e2430;border-radius:10px;padding:14px 16px;border:1px solid #2d3748}
+.ml{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:#64748b;margin-bottom:4px}
+.mn{display:flex;align-items:baseline;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+.ma{font-size:26px;font-weight:700;font-family:"IBM Plex Mono",monospace;line-height:1}
+.mt{font-size:12px;color:#475569}
+.mp{font-size:12px;font-weight:600;margin-left:auto}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fi{display:flex;flex-direction:column;gap:4px}
+.fi label{font-size:10px;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px}
+.fi input,.fi select{background:#141c2e;border:1px solid #2d3748;color:#e2e8f0;padding:7px 9px;border-radius:6px;font-size:12px}
+.fs{font-size:11px;font-weight:600;color:#7dd3fc;text-transform:uppercase;padding:6px 0 4px;border-bottom:1px solid #1e2a40;margin-bottom:8px;grid-column:1/-1}
+.mok{background:#052e16;color:#4ade80;border:1px solid #166534;border-radius:6px;padding:8px 12px;font-size:11px;text-align:center;font-weight:500}
+.mer{background:#2a0a0a;color:#f87171;border:1px solid #7f1d1d;border-radius:6px;padding:8px 12px;font-size:11px;text-align:center;font-weight:500}
+.te{border-radius:6px;padding:9px 11px;margin-top:6px;font-size:11px;line-height:1.7;grid-column:1/-1}
+.te ul{padding-left:14px}
+.tesim{background:#0c1a2e;border:1px solid #0369a1}.tesim li{color:#7dd3fc}
+.ttie{background:#1a1200;border:1px solid #92400e}.ttie li{color:#fde68a}
+.tdom{background:#1a0a2a;border:1px solid #7c3aed}.tdom li{color:#d8b4fe}
+.aw2{background:#1f0a0a;border:1px solid #ef4444;border-radius:6px;padding:7px 10px;font-size:11px;color:#fca5a5;margin-top:4px}
 .filters{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">⚡ Team R</div>
-    <div class="login-sub">WOM Colombia · Covisian</div>
+<div id="ls">
+  <div class="lcard">
+    <div class="llogo">⚡ Team R</div>
+    <div class="lsub">WOM Colombia · Covisian</div>
     <h2>Iniciar sesión</h2>
-    <p class="login-desc">Ingresa tu número de cédula</p>
-    <input type="password" id="cedula-input" class="linput" placeholder="Número de cédula"
-      autocomplete="off" onkeydown="if(event.key==='Enter')intentarLogin()">
-    <button class="btn-login" onclick="intentarLogin()">Ingresar →</button>
-    <div id="login-error" class="lerr"></div>
+    <p class="ldesc">Ingresa tu número de cédula</p>
+    <input type="password" id="ci" class="linput" placeholder="Número de cédula" autocomplete="off"
+      onkeydown="if(event.key==='Enter')login()">
+    <button class="lbtn" onclick="login()">Ingresar →</button>
+    <div id="le" class="lerr"></div>
   </div>
 </div>
 
-<!-- SUPERVISOR APP -->
-<div id="sup-app" class="app-wrap">
-  <div class="topbar">
-    <div><div class="app-title">⚡ Team R — Vista Supervisor</div><div class="app-sub" id="ts-sup"></div></div>
+<!-- SUPERVISOR -->
+<div id="sa" class="aw">
+  <div class="tb">
+    <div><div class="at">⚡ Team R — Vista Supervisor</div><div class="as" id="ts"></div></div>
     <div class="filters">
-      <select id="fil-tipo" onchange="renderSup()"><option value="">Todos los tipos</option><option>PORTABILIDAD</option><option>MIGRACIÓN</option><option>LINEA NUEVA</option></select>
-      <select id="fil-asesor" onchange="renderSup()"><option value="">Todos los asesores</option></select>
-      <button class="btn btn-out" style="font-size:11px" onclick="recargarDatos()">🔄 Actualizar</button>
-      <button class="btn btn-out" onclick="logout()">Cerrar sesión</button>
+      <select id="ft" onchange="rSup()">
+        <option value="">Todos los tipos</option>
+        <option>PORTABILIDAD</option><option>MIGRACIÓN</option><option>LINEA NUEVA</option>
+      </select>
+      <select id="fa" onchange="rSup()"><option value="">Todos los asesores</option></select>
+      <button class="btn bto" onclick="logout()">Cerrar sesión</button>
     </div>
   </div>
-  <div class="kpis" id="kpis-sup"></div>
+  <div class="kpis" id="ks"></div>
   <div class="tabs">
-    <div class="tab active" onclick="switchTabSup('alertas',this)">🚨 Alertas</div>
-    <div class="tab" onclick="switchTabSup('efectividad',this)">📊 Efectividad</div>
-    <div class="tab" onclick="switchTabSup('todos-pedidos',this)">📋 Todos los pedidos</div>
+    <div class="tab active" onclick="stSup('al',this)">🚨 Alertas</div>
+    <div class="tab" onclick="stSup('ef',this)">📊 Efectividad</div>
+    <div class="tab" onclick="stSup('td',this)">📋 Todos los pedidos</div>
   </div>
-  <div id="alertas" class="section active"></div>
-  <div id="efectividad" class="section"></div>
-  <div id="todos-pedidos" class="section"></div>
+  <div id="al" class="sec active"></div>
+  <div id="ef" class="sec"></div>
+  <div id="td" class="sec"></div>
 </div>
 
-<!-- ASESOR APP -->
-<div id="asesor-app" class="app-wrap">
-  <div class="topbar">
-    <div><div class="app-title">👤 <span id="asesor-nombre-hdr"></span></div><div class="app-sub">Team R · WOM Colombia</div></div>
-    <div style="display:flex;gap:7px">
-      <button class="btn btn-out" style="font-size:11px" onclick="recargarDatos()">🔄 Actualizar</button>
-      <button class="btn btn-out" onclick="logout()">Cerrar sesión</button>
-    </div>
+<!-- ASESOR -->
+<div id="aa" class="aw">
+  <div class="tb">
+    <div><div class="at">👤 <span id="ahn"></span></div><div class="as">Team R · WOM Colombia</div></div>
+    <button class="btn bto" onclick="logout()">Cerrar sesión</button>
   </div>
-  <div class="meta-grid" id="asesor-metas"></div>
-  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:14px" id="asesor-kpis"></div>
+  <div class="mg" id="am"></div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:14px" id="ak"></div>
   <div class="tabs">
-    <div class="tab active" onclick="switchTabAs('mis-pedidos-tab',this)">📋 Mis Pedidos</div>
-    <div class="tab" onclick="switchTabAs('nuevo-tab',this)">➕ Registrar venta</div>
+    <div class="tab active" onclick="stAs('mpt',this)">📋 Mis Pedidos</div>
+    <div class="tab" onclick="stAs('nvt',this)">➕ Registrar venta</div>
   </div>
-  <div id="mis-pedidos-tab" class="section active">
-    <div class="panel">
-      <div class="phdr"><span class="dot" style="background:#60a5fa"></span>Mis ventas — todos los campos editables</div>
-      <div style="overflow-x:auto;max-height:520px;overflow-y:auto" id="mis-pedidos-body"></div>
+  <div id="mpt" class="sec active">
+    <div class="pnl">
+      <div class="ph"><span class="dot" style="background:#60a5fa"></span>Mis ventas — todos los campos editables</div>
+      <div style="overflow-x:auto;max-height:520px;overflow-y:auto" id="mpb"></div>
     </div>
   </div>
-  <div id="nuevo-tab" class="section">
-    <div class="panel">
-      <div class="phdr"><span class="dot" style="background:#4ade80"></span>Registrar nueva venta</div>
-      <div class="pbody">
-        <div class="form-grid">
-          <div class="fsec">📋 Datos del pedido</div>
-          <div class="fg">
+  <div id="nvt" class="sec">
+    <div class="pnl">
+      <div class="ph"><span class="dot" style="background:#4ade80"></span>Registrar nueva venta</div>
+      <div class="pb">
+        <div class="fg">
+          <div class="fs">📋 Datos del pedido</div>
+          <div class="fi">
             <label>Tipo de pedido *</label>
-            <select id="f-tipo" onchange="onTipoChange()">
+            <select id="ftp" onchange="onTc()">
               <option value="">— Seleccionar —</option>
               <option value="PORTABILIDAD">Portabilidad</option>
               <option value="MIGRACIÓN">Migración</option>
               <option value="LINEA_NUEVA">Línea Nueva (pendiente de pago)</option>
             </select>
           </div>
-          <div class="fg" id="fg-procede" style="display:none">
+          <div class="fi" id="fgp" style="display:none">
             <label>¿La venta procede?</label>
-            <select id="f-procede"><option value="Procede">✅ Procede</option><option value="No Procede">❌ No Procede</option></select>
+            <select id="fpr"><option value="Procede">✅ Procede</option><option value="No Procede">❌ No Procede</option></select>
           </div>
-          <div class="fg">
+          <div class="fi">
             <label>Tipo de entrega *</label>
-            <select id="f-entrega" onchange="onEntregaChange()">
+            <select id="fte" onchange="onEc()">
               <option value="">— Seleccionar —</option>
               <option value="esim">📱 eSIM (recomendado)</option>
               <option value="tienda">🏪 Entrega en tienda</option>
               <option value="domicilio">🚚 A domicilio</option>
             </select>
           </div>
-          <div id="tip-entrega" style="display:none"></div>
-          <div class="fsec">📝 Datos de la orden</div>
-          <div class="fg"><label>N° de orden</label><input type="text" id="f-orden" placeholder="ej. 385108353"></div>
-          <div class="fg"><label>N° de línea</label><input type="text" id="f-linea" placeholder="ej. 3137104726"></div>
-          <div class="fg"><label>Fecha</label><input type="date" id="f-fecha"></div>
-          <div class="fg" style="justify-content:flex-end;padding-top:18px">
+          <div id="tet" style="display:none"></div>
+          <div class="fs">📝 Datos de la orden</div>
+          <div class="fi"><label>N° de orden</label><input type="text" id="for" placeholder="ej. 385108353"></div>
+          <div class="fi"><label>N° de línea</label><input type="text" id="fli" placeholder="ej. 3137104726"></div>
+          <div class="fi"><label>Fecha</label><input type="date" id="ff"></div>
+          <div class="fi" style="justify-content:flex-end;padding-top:18px">
             <span style="font-size:10px;color:#4ade80;background:#052e16;border:1px solid #166534;border-radius:5px;padding:5px 9px">Estado inicial: <strong>En Progreso</strong></span>
           </div>
-          <div class="fsec">💰 Valor del plan</div>
-          <div class="fg"><label>Valor con IVA ($)</label><input type="number" id="f-viva" placeholder="ej. 54990" oninput="calcSinIva()"></div>
-          <div class="fg"><label>Valor sin IVA (auto)</label><input type="number" id="f-siva" placeholder="Automático" readonly style="color:#64748b"></div>
+          <div class="fs">💰 Valor del plan</div>
+          <div class="fi"><label>Valor con IVA ($)</label><input type="number" id="fvi" placeholder="ej. 54990" oninput="csi()"></div>
+          <div class="fi"><label>Valor sin IVA (auto)</label><input type="number" id="fsi" placeholder="Automático" readonly style="color:#64748b"></div>
           <div style="grid-column:1/-1;display:flex;gap:8px;margin-top:6px">
-            <button class="btn btn-g" onclick="guardarPedido()">✅ Registrar venta</button>
-            <button class="btn btn-out" onclick="limpiarForm()">🗑 Limpiar</button>
+            <button class="btn btg" onclick="gp()">✅ Registrar venta</button>
+            <button class="btn bto" onclick="lf()">🗑 Limpiar</button>
           </div>
-          <div id="f-msg" style="display:none;grid-column:1/-1"></div>
+          <div id="fm" style="display:none;grid-column:1/-1"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SAVING INDICATOR -->
-<div id="saving-indicator" class="saving-indicator"><span class="spinner"></span>Guardando en Sheets...</div>
-
 <script>
-// ══════════════════════════════════════════════════════
-//  ⚙️  CONFIGURACIÓN — Pegar aquí la URL del Apps Script
-const SCRIPT_URL = https://jrcardona-alt.github.io/teamr-dashboard1/
-// ══════════════════════════════════════════════════════
 
-const SUPERVISOR_HASH = "c30e4ced54fa0989fee90f50679921ba1237fd1885adfe25722d58256c4a7379";
-const ADVISOR_HASHES  = {"129cd3ae310be822c00a4cb2c2ede3f68e23ab3baf30aa7b485322a1f8a73881": "Jose Aragon", "72236afbba41aae33d14cf3826b9d2f94be8387a59cd933c240d06c19ec721bd": "Natalie Ramirez", "a02514fae63211631808a693880444a1e4684de0c4c9bbb6bc9a2cc8d78e0d19": "Carolay Zurita", "71ae64dc175726c28b8f27474b6af7e235960d0dad0ca041a327955d9b0fe2fe": "Mayerlis Mendoza", "7114c6719337e401b115cd218b4ad8b9453f1c1538b71c14aceec93092d42aa3": "Luis Marrugo", "ac9290e3541fd4901ecc973103d9897b44906f98522b0fa74944a0a80ad3aa8c": "Emilin Collazo", "575c583bdc809e7953c8f13b8a1bed51d4aa37f706890ddbd3bb781666b47ebf": "Mileids Ramirez", "326bbb93054d3ead01d9717009edaa3aad1fc7c7f472b87d3c8ce9589cba7e01": "Daniela Caro", "a4666508f2700feea09c0ba6e1df1f90d21a95d30dbca4d3ae1a0113d756502e": "Hillary Peña", "24ffa514d2792aee82aab344626d66b90c702f59fd051c2225eb27604840ba19": "Estefany Campo", "34be21f5b81f3c6cc72823a3ff535bb89c8adb50e4a4f7fd93b7b5f584a244d1": "Stephany Benedetti", "708c7822e9ac5725f68b1bbf27683ef7abdc317bdb713e3a01af76516bfb6918": "Wendy Orozco", "dbe29d5142e41742739d8cef4c02d9567083327dfad61aa420da6d3410a72b3f": "Mariana Huertas", "1a8d33b5f13ae004855a9f24b317864beacee32232f959063654d0137b03389b": "Stefany Castro", "9266356b5fe1ebb674336b03d99c2389aa8e858bb55ae6c7e9acf8187b99fd00": "Alex Mackenzie", "725282aa13bb7ba34e600d1bc82d7ed2e2e0db14902b0f7e0263616346354679": "Isabel Iglesias", "aa8e82b35d1d924e8e38be5e31adc84ba54fd19c7659811669ae73c6800ba95a": "Anderson Manjarres", "8cb381d121a0bc80c0a1f8fc7f3ea42486cab0410c93c210dfb1d3153f31f96a": "Ximena Villarreal", "e61c8cabd1ded9eeac237316b825d054b5976c7a70c725adff43b0b7cc5d3d7b": "Adament Correa", "b6b4e3493f6c125fa31299670ac9b4371c8b718aacf52b005a29e1b4a86a4e98": "Jorge Altamar", "5a2becf9950fc2cd8ec7d6ca7585c17f097af6cda4de6bb4af339fe79b2421d8": "Hassan Montes", "c23fff02a0cf8c0336dd36659899c0a6f9d3d3ad81622a3cf8b70d89bfcb2a68": "Brenda Meza", "78ec38750feccc83fc52db520998dffb29a15fb034b84224187ef5b23dd407e2": "Karla Olivares", "eeb3ec37a8a58498ef7aa54c7da3d3537b265a152f524f5ff66f26dd65abc858": "Danna Nuñez", "36dda94781072bd902908014d103c997e480e0a43b8235dac8fc50c58b21c265": "Merly Ortiz", "0fff178883be16ec555d27eac4685d576e560757d203aaaf0e096c3a2e41a34c": "Yuranis Sanchez", "c12705ed58cf01f43369c09539f383fae60a2e0773fecefd74636225c06f4b09": "Raul Rodriguez", "e95cd1c0aee806e7a73c54c99b6e4ec7e5adb96f39acfb8a446fe4ae7a8b4347": "Yamil Gutiérrez", "14fc73136f3f3db912f3e6a6a2f7e4a662ba2d263a97bbdb4dcd53f0c835934c": "Shery Jaramillo"};
-const ACTIVE_ASESORES = ["Adament Correa", "Alex Mackenzie", "Anderson Manjarres", "Brenda Meza", "Carolay Zurita", "Daniela Caro", "Danna Nuñez", "Emilin Collazo", "Estefany Campo", "Hassan Montes", "Hillary Peña", "Isabel Iglesias", "Jorge Altamar", "Jose Aragon", "Karla Olivares", "Luis Marrugo", "Mariana Huertas", "Mayerlis Mendoza", "Merly Ortiz", "Mileids Ramirez", "Natalie Ramirez", "Raul Rodriguez", "Shery Jaramillo", "Stefany Castro", "Stephany Benedetti", "Wendy Orozco", "Ximena Villarreal", "Yamil Gutiérrez", "Yuranis Sanchez"];
-const ESTADOS = ["COMPLETADO", "EN TRANSITO", "Cancelado", "Esperando respuesta de ABD", "PEDIDO EN TIENDA", "En Progreso", "Relanzado"];
-
-const META_ACTIVAS = 50;
-const META_FACTURA = 2300000;
-
-const ELABEL = {"COMPLETADO":"Completado","EN TRANSITO":"En tránsito","Cancelado":"Cancelado",
+var DATA=[{"id":0,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385142913,"linea":3005055784,"asesor":"Yuranis Sanchez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":1,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385541276,"linea":3114266360,"asesor":"Yuranis Sanchez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":2,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385725672,"linea":3106467841,"asesor":"Yuranis Sanchez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":3,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385814413,"linea":3229073245,"asesor":"Yuranis Sanchez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":4,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385987169,"linea":3011391186,"asesor":"Yuranis Sanchez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":5,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385706019,"linea":3150449179,"asesor":"Yuranis Sanchez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":6,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386622974,"linea":3009718835,"asesor":"Ximena Villarreal","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":7,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384844835,"linea":3019580545,"asesor":"Ximena Villarreal","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":8,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384332128,"linea":3045944978,"asesor":"Ximena Villarreal","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":9,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384194160,"linea":3145804982,"asesor":"Ximena Villarreal","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":10,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384288669,"linea":3019580545,"asesor":"Ximena Villarreal","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":11,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382060651,"linea":3218341517,"asesor":"Wendy Salcedo","fecha":"18/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":12,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384341295,"linea":3005443673,"asesor":"Adament Correa","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":13,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383671089,"linea":3016478514,"asesor":"Adament Correa","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":14,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383034589,"linea":3001017012,"asesor":"Adament Correa","fecha":"23/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":15,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385339489,"linea":3043584315,"asesor":"Adament Correa","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":16,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384807653,"linea":3232823706,"asesor":"Adament Correa","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":17,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385533827,"linea":3137875628,"asesor":"Stephany Benedetti","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":18,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385107198,"linea":3007088151,"asesor":"Stefany Castro","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":19,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385707166,"linea":3243454066,"asesor":"Stefany Castro","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":20,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383662876,"linea":3243454066,"asesor":"Stefany Castro","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":21,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385349994,"linea":3017023304,"asesor":"Shery Jaramillo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":22,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385552230,"linea":3008087187,"asesor":"Natalie Ramirez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":23,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384848133,"linea":3013394073,"asesor":"Mariana Huertas","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":24,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385135567,"linea":3167070394,"asesor":"Mariana Huertas","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":25,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385128145,"linea":3012674211,"asesor":"Mariana Huertas","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":26,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385399559,"linea":3003388956,"asesor":"Mariana Huertas","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":27,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384809627,"linea":3159700139,"asesor":"Mariana Huertas","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":28,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384341268,"linea":3113451701,"asesor":"Mariana Huertas","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":29,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384320142,"linea":3042295933,"asesor":"Mariana Huertas","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":30,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385344453,"linea":3219004725,"asesor":"Jose Aragon","fecha":"05/05/2026","estadoPago":"PAGADA","valorIva":44990,"valorSinIva":36441.9},{"id":31,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385534464,"linea":3005570394,"asesor":"Jose Aragon","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":32,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385347105,"linea":3011291721,"asesor":"Jose Aragon","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":33,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382822032,"linea":3011184359,"asesor":"Jose Aragon","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":34,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384349277,"linea":3027495047,"asesor":"Jose Aragon","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":35,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384189722,"linea":3234852186,"asesor":"Jose Aragon","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":36,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385964616,"linea":3217526851,"asesor":"Hillary Peña","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":37,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385553262,"linea":3045437397,"asesor":"Hassan Montes","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":38,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385108353,"linea":3137104726,"asesor":"Emilin Collazo","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":39,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385539841,"linea":3118635720,"asesor":"Emilin Collazo","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":40,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385696558,"linea":3125643755,"asesor":"Emilin Collazo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":41,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385338153,"linea":3012633154,"asesor":"Emilin Collazo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":42,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385964919,"linea":3243260460,"asesor":"Emilin Collazo","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":43,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384807187,"linea":3228858131,"asesor":"Danna Nuñez","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":44,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":382498703,"linea":3016337332,"asesor":"Danna Nuñez","fecha":"20/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":45,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386362923,"linea":3118325804,"asesor":"Daniela Caro","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":46,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385710080,"linea":3246878427,"asesor":"Daniela Caro","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":47,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385509740,"linea":3112247808,"asesor":"Daniela Caro","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":48,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384850437,"linea":3180228326,"asesor":"Daniela Caro","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":49,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384322012,"linea":3042395385,"asesor":"Daniela Caro","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":50,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384480358,"linea":3156834999,"asesor":"Daniela Caro","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":51,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385552250,"linea":3046143203,"asesor":"Carolay Zurita","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":52,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385705865,"linea":3006479866,"asesor":"Carolay Zurita","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":53,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385733002,"linea":3005919655,"asesor":"Carolay Zurita","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":54,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384453194,"linea":3245434121,"asesor":"Carolay Zurita","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":55,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383212226,"linea":3166059693,"asesor":"Carolay Zurita","fecha":"24/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":56,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384814072,"linea":3236168220,"asesor":"Brenda Meza","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":57,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384843792,"linea":3046694735,"asesor":"Brenda Meza","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":58,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384196726,"linea":3011313502,"asesor":"Brenda Meza","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":59,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":382629584,"linea":3227802273,"asesor":"Brenda Meza","fecha":"21/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":60,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384480365,"linea":3122299955,"asesor":"Brenda Meza","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":44990,"valorSinIva":36441.9},{"id":61,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385142799,"linea":3103943215,"asesor":"Yamil Gutiérrez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":62,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385411089,"linea":3153356912,"asesor":"Yamil Gutiérrez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":63,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385569230,"linea":3001443705,"asesor":"Yamil Gutiérrez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":64,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386422842,"linea":3012355320,"asesor":"Yamil Gutiérrez","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":65,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385813970,"linea":3246168303,"asesor":"Yamil Gutiérrez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":66,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385364321,"linea":3026645566,"asesor":"Ximena Villarreal","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":67,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385981512,"linea":3154395058,"asesor":"Ximena Villarreal","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":68,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385846957,"linea":3502429305,"asesor":"Ximena Villarreal","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":69,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385807577,"linea":3242344213,"asesor":"Ximena Villarreal","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":70,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386431762,"linea":3122080895,"asesor":"Ximena Villarreal","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":71,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384818299,"linea":3019408387,"asesor":"Wendy Orozco","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":72,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385976710,"linea":3019409618,"asesor":"Wendy Orozco","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":73,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386419397,"linea":3216588427,"asesor":"Wendy Orozco","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":74,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385409365,"linea":3207357257,"asesor":"Wendy Orozco","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":75,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385574805,"linea":3023491589,"asesor":"Wendy Orozco","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":76,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385107853,"linea":3005572082,"asesor":"Wendy Orozco","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":77,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384445824,"linea":3006659838,"asesor":"Wendy Orozco","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":78,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384319137,"linea":3004169209,"asesor":"Wendy Orozco","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":79,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384476843,"linea":3018498894,"asesor":"Wendy Orozco","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":80,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384160493,"linea":3244210686,"asesor":"Wendy Orozco","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":81,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384189661,"linea":3009690224,"asesor":"Valery Camero","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":82,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384185697,"linea":3245624440,"asesor":"Adament Correa","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":83,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384342535,"linea":3125653519,"asesor":"Adament Correa","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":84,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386621732,"linea":3024623146,"asesor":"Adament Correa","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":85,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385093204,"linea":3108888510,"asesor":"Adament Correa","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":86,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385860850,"linea":3118657633,"asesor":"Adament Correa","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":87,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385988121,"linea":3042161467,"asesor":"Adament Correa","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":88,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384818480,"linea":3235035927,"asesor":"Adament Correa","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":89,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385794291,"linea":3105829508,"asesor":"Adament Correa","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":90,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386667567,"linea":3244272689,"asesor":"Adament Correa","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":91,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386479877,"linea":3245969262,"asesor":"Adament Correa","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":92,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385083979,"linea":3116488616,"asesor":"Stephany Benedetti","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":93,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384853915,"linea":3114623264,"asesor":"Stephany Benedetti","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":94,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385146578,"linea":3124341699,"asesor":"Stephany Benedetti","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":95,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386417061,"linea":3217433308,"asesor":"Stephany Benedetti","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":96,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386453750,"linea":3245332765,"asesor":"Stephany Benedetti","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":97,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386636907,"linea":3174554927,"asesor":"Stephany Benedetti","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":98,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385706875,"linea":3004810041,"asesor":"Stephany Benedetti","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":99,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385980130,"linea":3208670037,"asesor":"Stephany Benedetti","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":100,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385700824,"linea":3176514465,"asesor":"Stephany Benedetti","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":101,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385356310,"linea":3244362872,"asesor":"Stephany Benedetti","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":102,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385106445,"linea":3004810041,"asesor":"Stephany Benedetti","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":103,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384808371,"linea":3017579187,"asesor":"Stephany Benedetti","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":104,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385404196,"linea":3218099910,"asesor":"Stephany Benedetti","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":105,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385718511,"linea":3154384261,"asesor":"Stephany Benedetti","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":106,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385113293,"linea":3023469584,"asesor":"Stephany Benedetti","fecha":"04/05/2026","estadoPago":"SIN PAGO","valorIva":54990,"valorSinIva":44541.9},{"id":107,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384081758,"linea":3012055962,"asesor":"Stephany Benedetti","fecha":"28/04/2026","estadoPago":"SIN PAGO","valorIva":54990,"valorSinIva":44541.9},{"id":108,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382832011,"linea":3122286983,"asesor":"Stephany Benedetti","fecha":"22/04/2026","estadoPago":"SIN PAGO","valorIva":54990,"valorSinIva":44541.9},{"id":109,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385559706,"linea":3044323038,"asesor":"Stefany Castro","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":110,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386665798,"linea":3160538833,"asesor":"Stefany Castro","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":111,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386479350,"linea":3108235924,"asesor":"Stefany Castro","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":112,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385968266,"linea":3046389376,"asesor":"Stefany Castro","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":113,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385863555,"linea":3058574027,"asesor":"Stefany Castro","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":114,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385571394,"linea":3146512845,"asesor":"Stefany Castro","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":115,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385964258,"linea":3216056311,"asesor":"Stefany Castro","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":116,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385736633,"linea":3016922991,"asesor":"Stefany Castro","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":117,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385722016,"linea":3102552364,"asesor":"Stefany Castro","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":118,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383803441,"linea":3001951640,"asesor":"Stefany Castro","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":119,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385811817,"linea":3005398446,"asesor":"Shery Jaramillo","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":120,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385529135,"linea":3053477380,"asesor":"Shery Jaramillo","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":121,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385700169,"linea":3002874126,"asesor":"Shery Jaramillo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":122,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385134886,"linea":3174187140,"asesor":"Raul Rodriguez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":123,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385404929,"linea":3244062025,"asesor":"Raul Rodriguez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":124,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385796512,"linea":3332523344,"asesor":"Raul Rodriguez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":125,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385735396,"linea":3137879812,"asesor":"Raul Rodriguez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":126,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385385656,"linea":3027421222,"asesor":"Raul Rodriguez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":127,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385840855,"linea":3239607076,"asesor":"Raul Rodriguez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":128,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385516678,"linea":3183521884,"asesor":"Raul Rodriguez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":129,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385381886,"linea":3025230011,"asesor":"Raul Rodriguez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":130,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385533068,"linea":3115597627,"asesor":"Raul Rodriguez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":131,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382054180,"linea":3046743617,"asesor":"Alex Mackenzie","fecha":"18/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":132,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382055808,"linea":3505217778,"asesor":"Alex Mackenzie","fecha":"18/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":133,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382059998,"linea":3112615511,"asesor":"Alex Mackenzie","fecha":"18/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":134,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383738926,"linea":3042553824,"asesor":"Alex Mackenzie","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":135,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384285850,"linea":3018353034,"asesor":"Alex Mackenzie","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":136,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384300038,"linea":3136484162,"asesor":"Alex Mackenzie","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":137,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384315186,"linea":3246176313,"asesor":"Alex Mackenzie","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":138,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384066831,"linea":3058233996,"asesor":"Alex Mackenzie","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":139,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385678906,"linea":3011790072,"asesor":"Alex Mackenzie","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":140,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384815023,"linea":3026013651,"asesor":"Alex Mackenzie","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":141,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384814051,"linea":3027472983,"asesor":"Alex Mackenzie","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":142,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385670087,"linea":3224781912,"asesor":"Alex Mackenzie","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":143,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385977847,"linea":3195825751,"asesor":"Alex Mackenzie","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":144,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385121997,"linea":3023815813,"asesor":"Alex Mackenzie","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":145,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385792969,"linea":3042621205,"asesor":"Alex Mackenzie","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":146,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385368634,"linea":3003382708,"asesor":"Alex Mackenzie","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":147,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385395062,"linea":3215999197,"asesor":"Alex Mackenzie","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":148,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386616583,"linea":3103651232,"asesor":"Alex Mackenzie","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":149,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386642789,"linea":3144611217,"asesor":"Alex Mackenzie","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":150,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384821157,"linea":3009435722,"asesor":"Alex Mackenzie","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":151,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385844885,"linea":3013426023,"asesor":"Alex Mackenzie","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":152,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385529376,"linea":3018110908,"asesor":"Alex Mackenzie","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":153,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386624888,"linea":3004953119,"asesor":"Natalie Ramirez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":154,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385703503,"linea":3007376170,"asesor":"Natalie Ramirez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":155,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385796564,"linea":3245966963,"asesor":"Natalie Ramirez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":156,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385989626,"linea":3044617906,"asesor":"Natalie Ramirez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":157,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385138150,"linea":3135047607,"asesor":"Natalie Ramirez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":158,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385363155,"linea":3004953119,"asesor":"Natalie Ramirez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":159,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385520959,"linea":3043611650,"asesor":"Natalie Ramirez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":160,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386425242,"linea":3007851864,"asesor":"Natalie Ramirez","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":161,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384286288,"linea":3223032635,"asesor":"Natalie Ramirez","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":162,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382850900,"linea":3046118625,"asesor":"Natalie Ramirez","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":163,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385961027,"linea":3024159227,"asesor":"Mileids Ramirez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":164,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385865857,"linea":3122163769,"asesor":"Mileids Ramirez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":165,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385523510,"linea":3218598537,"asesor":"Mileids Ramirez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":166,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386480634,"linea":3163608365,"asesor":"Mileids Ramirez","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":167,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385723059,"linea":3203201462,"asesor":"Mileids Ramirez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":168,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384817113,"linea":3027190540,"asesor":"Mileids Ramirez","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":169,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385086629,"linea":3057832228,"asesor":"Mileids Ramirez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":170,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385687755,"linea":3012469298,"asesor":"Mileids Ramirez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":171,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385796672,"linea":3013166037,"asesor":"Mileids Ramirez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":172,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385359972,"linea":3185789469,"asesor":"Mileids Ramirez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":173,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":386610805,"linea":3018340545,"asesor":"Mileids Ramirez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":174,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386557364,"linea":3136493741,"asesor":"Mileids Ramirez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":175,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385114721,"linea":3006744799,"asesor":"Mileids Ramirez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":176,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384318989,"linea":3014003833,"asesor":"Mileids Ramirez","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":177,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384316377,"linea":3243315283,"asesor":"Mileids Ramirez","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":178,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384140004,"linea":3042891914,"asesor":"Mileids Ramirez","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":179,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384332654,"linea":3053245422,"asesor":"Mileids Ramirez","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":180,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383805983,"linea":3014780724,"asesor":"Mileids Ramirez","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":181,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386430173,"linea":3011695672,"asesor":"Merly Ortiz","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":182,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385989010,"linea":3005220145,"asesor":"Merly Ortiz","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":183,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385140871,"linea":3008145564,"asesor":"Merly Ortiz","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":184,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385809719,"linea":3507674837,"asesor":"Merly Ortiz","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":185,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385131720,"linea":3135774126,"asesor":"Mayerlis Mendoza","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":186,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385133154,"linea":3028334175,"asesor":"Mayerlis Mendoza","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":187,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386667681,"linea":3136762700,"asesor":"Mayerlis Mendoza","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":188,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385853962,"linea":3229599781,"asesor":"Mayerlis Mendoza","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":189,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385852366,"linea":3022510028,"asesor":"Mayerlis Mendoza","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":190,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386438400,"linea":3023958830,"asesor":"Mayerlis Mendoza","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":191,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385535458,"linea":3214614115,"asesor":"Mayerlis Mendoza","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":192,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385330975,"linea":3004113096,"asesor":"Mayerlis Mendoza","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":193,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385696849,"linea":3105747023,"asesor":"Mayerlis Mendoza","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":194,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386664937,"linea":3046360425,"asesor":"Mayerlis Mendoza","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":195,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385725789,"linea":3002613373,"asesor":"Mayerlis Mendoza","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":196,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384291757,"linea":3244950317,"asesor":"Mayerlis Mendoza","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":197,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385533408,"linea":3243817810,"asesor":"Mariana Huertas","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":198,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385682735,"linea":3236812605,"asesor":"Mariana Huertas","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":199,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386689475,"linea":3042180527,"asesor":"Mariana Huertas","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":200,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385855124,"linea":3118768068,"asesor":"Mariana Huertas","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":201,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386441989,"linea":3013980831,"asesor":"Mariana Huertas","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":202,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383206443,"linea":3015789197,"asesor":"Mariana Huertas","fecha":"24/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":203,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384289121,"linea":3007212107,"asesor":"Mariana Huertas","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":204,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384054515,"linea":3144564524,"asesor":"Mariana Huertas","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":205,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385394207,"linea":3222401573,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":206,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385391920,"linea":3135798189,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":207,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385392953,"linea":3042680808,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":208,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385386652,"linea":3103277282,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":209,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385389535,"linea":3117834292,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":210,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385702573,"linea":3158942866,"asesor":"Luis Marrugo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":211,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385089925,"linea":3004786894,"asesor":"Luis Marrugo","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":212,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385968551,"linea":3235181357,"asesor":"Luis Marrugo","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":213,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385698825,"linea":3177777088,"asesor":"Luis Marrugo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":214,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384800312,"linea":3215186275,"asesor":"Luis Marrugo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":215,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385969455,"linea":3216063741,"asesor":"Luis Marrugo","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":216,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386415035,"linea":3218036243,"asesor":"Luis Marrugo","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":217,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384827015,"linea":3103192845,"asesor":"Luis Marrugo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":218,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385666414,"linea":3107138083,"asesor":"Luis Marrugo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":219,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385390895,"linea":3123069117,"asesor":"Luis Marrugo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":220,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384851830,"linea":3013884867,"asesor":"Luis Marrugo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":221,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385681383,"linea":3013570704,"asesor":"Luis Marrugo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":222,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":381426068,"linea":3147113865,"asesor":"Luis Marrugo","fecha":"16/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":223,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":381340011,"linea":3011313006,"asesor":"Luis Marrugo","fecha":"15/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":224,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383670086,"linea":3007363536,"asesor":"Luis Marrugo","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":225,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384184873,"linea":3242770457,"asesor":"Luis Marrugo","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":226,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384477378,"linea":3013570704,"asesor":"Luis Marrugo","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":227,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385570799,"linea":3161346289,"asesor":"Karla Olivares","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":228,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385079201,"linea":3134289854,"asesor":"Karla Olivares","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":229,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385700382,"linea":3244676531,"asesor":"Karla Olivares","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":230,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386475905,"linea":3016829963,"asesor":"Karla Olivares","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":231,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386677937,"linea":3218341517,"asesor":"Karla Olivares","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":232,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384848535,"linea":3205927173,"asesor":"Karla Olivares","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":233,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386436181,"linea":3223785285,"asesor":"Karla Olivares","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":234,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383190919,"linea":3006233415,"asesor":"Karla Olivares","fecha":"24/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":235,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383746621,"linea":3218621945,"asesor":"Karla Olivares","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":236,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385525816,"linea":3207724582,"asesor":"Jose Aragon","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":237,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386621392,"linea":3145179611,"asesor":"Jose Aragon","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":238,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385808691,"linea":3002759724,"asesor":"Jose Aragon","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":239,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385402369,"linea":3125343997,"asesor":"Jose Aragon","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":240,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385373260,"linea":3018944211,"asesor":"Jose Aragon","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":241,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386663039,"linea":3112890299,"asesor":"Jose Aragon","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":242,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384854153,"linea":3223725237,"asesor":"Jose Aragon","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":243,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384493358,"linea":3157071690,"asesor":"Jose Aragon","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":244,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383790816,"linea":3004338924,"asesor":"Jose Aragon","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":245,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384340597,"linea":3015680756,"asesor":"Jose Aragon","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":246,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384338777,"linea":3003460343,"asesor":"Jose Aragon","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":247,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382815796,"linea":3229341979,"asesor":"Jose Aragon","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":248,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385534809,"linea":3171580500,"asesor":"Jorge Altamar","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":249,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384807470,"linea":3107175137,"asesor":"Jorge Altamar","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":250,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385701827,"linea":3124305974,"asesor":"Jorge Altamar","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":251,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385132532,"linea":3204785955,"asesor":"Jorge Altamar","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":252,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385108494,"linea":3009874743,"asesor":"Jorge Altamar","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":253,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385138960,"linea":3205691274,"asesor":"Jorge Altamar","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":254,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385688912,"linea":3012128723,"asesor":"Jorge Altamar","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":255,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385360023,"linea":3023249771,"asesor":"Jorge Altamar","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":256,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385391269,"linea":3042249806,"asesor":"Jorge Altamar","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":257,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385126817,"linea":3238158023,"asesor":"Jorge Altamar","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":258,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385128052,"linea":3173071740,"asesor":"Jorge Altamar","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":259,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385657877,"linea":3145722549,"asesor":"Jorge Altamar","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":260,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385375826,"linea":3178457375,"asesor":"Jorge Altamar","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":261,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386666132,"linea":3235536165,"asesor":"Jorge Altamar","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":262,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386639503,"linea":3004049243,"asesor":"Jorge Altamar","fecha":"12/05/2026","estadoPago":"PAGADA","valorIva":54990,"valorSinIva":44541.9},{"id":263,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385520312,"linea":3014152709,"asesor":"Jorge Altamar","fecha":"06/05/2026","estadoPago":"SIN PAGO","valorIva":54990,"valorSinIva":44541.9},{"id":264,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385829093,"linea":3044955500,"asesor":"Jorge Altamar","fecha":"08/05/2026","estadoPago":"SIN PAGO","valorIva":54990,"valorSinIva":44541.9},{"id":265,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385804704,"linea":3215172569,"asesor":"Jorge Altamar","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":266,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385816115,"linea":3122544069,"asesor":"Jorge Altamar","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":267,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385401513,"linea":3012484606,"asesor":"Jorge Altamar","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":268,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386450348,"linea":3103756797,"asesor":"Jorge Altamar","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":269,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385849238,"linea":3042219072,"asesor":"Jorge Altamar","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":270,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384160286,"linea":3009947362,"asesor":"Jorge Altamar","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":271,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384104395,"linea":3015700397,"asesor":"Jorge Altamar","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":272,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384286014,"linea":3123393892,"asesor":"Anderson Manjarres","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":273,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384452106,"linea":3022767961,"asesor":"Anderson Manjarres","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":274,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384470261,"linea":3046256958,"asesor":"Anderson Manjarres","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":275,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384349538,"linea":3001874897,"asesor":"Anderson Manjarres","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":276,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384843674,"linea":3244945933,"asesor":"Anderson Manjarres","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":277,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385799644,"linea":3214876458,"asesor":"Anderson Manjarres","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":278,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385107195,"linea":3208059608,"asesor":"Anderson Manjarres","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":279,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384850513,"linea":3136112737,"asesor":"Anderson Manjarres","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":280,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385808900,"linea":3007178333,"asesor":"Anderson Manjarres","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":281,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385531757,"linea":3011000305,"asesor":"Anderson Manjarres","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":282,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385089994,"linea":3024329364,"asesor":"Anderson Manjarres","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":283,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385963888,"linea":3017126985,"asesor":"Anderson Manjarres","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":284,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384833940,"linea":3244945948,"asesor":"Anderson Manjarres","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":285,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385391188,"linea":3026372374,"asesor":"Anderson Manjarres","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":286,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386617587,"linea":3205571085,"asesor":"Anderson Manjarres","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":287,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385365909,"linea":3213600787,"asesor":"Anderson Manjarres","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":288,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386453021,"linea":3128805159,"asesor":"Anderson Manjarres","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":289,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385857447,"linea":3011000279,"asesor":"Anderson Manjarres","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":290,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385683246,"linea":3002879606,"asesor":"Anderson Manjarres","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":291,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385726923,"linea":3159226741,"asesor":"Isabel Iglesias","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":292,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385983932,"linea":3012504496,"asesor":"Isabel Iglesias","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":293,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385574636,"linea":3116738024,"asesor":"Isabel Iglesias","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":294,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386411855,"linea":3170546481,"asesor":"Isabel Iglesias","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":295,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385723634,"linea":3232909462,"asesor":"Isabel Iglesias","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":296,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385353889,"linea":3014163499,"asesor":"Isabel Iglesias","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":297,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385138599,"linea":3170546481,"asesor":"Isabel Iglesias","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":298,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383411328,"linea":3159226741,"asesor":"Isabel Iglesias","fecha":"25/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":299,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385355118,"linea":3007169345,"asesor":"Hillary Peña","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":300,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385128403,"linea":3011566141,"asesor":"Hillary Peña","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":301,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385529283,"linea":3189755067,"asesor":"Hillary Peña","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":302,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385557441,"linea":3137895567,"asesor":"Hillary Peña","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":303,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385368918,"linea":3008809263,"asesor":"Hillary Peña","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":304,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385721336,"linea":3244619109,"asesor":"Hillary Peña","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":305,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385855681,"linea":3023617123,"asesor":"Hassan Montes","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":306,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385355409,"linea":3107329146,"asesor":"Hassan Montes","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":307,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385083630,"linea":3145193323,"asesor":"Hassan Montes","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":308,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386611447,"linea":3113056618,"asesor":"Hassan Montes","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":309,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385071983,"linea":3003322792,"asesor":"Hassan Montes","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":310,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385104557,"linea":3136667182,"asesor":"Hassan Montes","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":311,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385081980,"linea":3011267396,"asesor":"Hassan Montes","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":312,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384467313,"linea":3243590513,"asesor":"Hassan Montes","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":313,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382708102,"linea":3013159820,"asesor":"Hassan Montes","fecha":"21/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":314,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383794476,"linea":3042558175,"asesor":"Hassan Montes","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":315,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383029476,"linea":3243800090,"asesor":"Hassan Montes","fecha":"23/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":316,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383799563,"linea":3046117958,"asesor":"Hassan Montes","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":317,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385801261,"linea":3017202411,"asesor":"Estefany Campo","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":318,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385807638,"linea":3013739533,"asesor":"Estefany Campo","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":319,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385122913,"linea":3016133561,"asesor":"Estefany Campo","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":320,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385567889,"linea":3011271453,"asesor":"Estefany Campo","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":321,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382812611,"linea":3009734210,"asesor":"Estefany Campo","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":322,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383220194,"linea":3014701437,"asesor":"Estefany Campo","fecha":"24/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":323,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384348450,"linea":3042771892,"asesor":"Estefany Campo","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":324,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385835741,"linea":3004571192,"asesor":"Emilin Collazo","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":325,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385688416,"linea":3003246964,"asesor":"Emilin Collazo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":326,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385531950,"linea":3117531061,"asesor":"Emilin Collazo","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":327,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384844602,"linea":3046229771,"asesor":"Emilin Collazo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":328,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384845181,"linea":3027539430,"asesor":"Emilin Collazo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":329,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386618591,"linea":3026480850,"asesor":"Emilin Collazo","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":330,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386670901,"linea":3016048266,"asesor":"Emilin Collazo","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":331,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385390353,"linea":3246691749,"asesor":"Emilin Collazo","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":332,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385716539,"linea":3014762218,"asesor":"Emilin Collazo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":333,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385702010,"linea":3189083639,"asesor":"Emilin Collazo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":334,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386678835,"linea":3205897670,"asesor":"Emilin Collazo","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":335,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385133058,"linea":3215600404,"asesor":"Emilin Collazo","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":336,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384801951,"linea":3145037801,"asesor":"Emilin Collazo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":337,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383740406,"linea":3015465775,"asesor":"Emilin Collazo","fecha":"27/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":338,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":383395098,"linea":3118186594,"asesor":"Emilin Collazo","fecha":"25/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":339,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":382440954,"linea":3193826836,"asesor":"Emilin Collazo","fecha":"20/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":340,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383028251,"linea":3204380614,"asesor":"Emilin Collazo","fecha":"23/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":341,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383041675,"linea":3016048266,"asesor":"Emilin Collazo","fecha":"23/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":342,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382051737,"linea":3205897670,"asesor":"Emilin Collazo","fecha":"18/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":343,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385707750,"linea":3332619880,"asesor":"Danna Nuñez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":344,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385335397,"linea":3014130769,"asesor":"Danna Nuñez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":345,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385535722,"linea":3022634657,"asesor":"Danna Nuñez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":346,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385132646,"linea":3027328338,"asesor":"Danna Nuñez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":347,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385122422,"linea":3054437992,"asesor":"Danna Nuñez","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":348,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385367874,"linea":3116642600,"asesor":"Danna Nuñez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":349,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":385673547,"linea":3014819616,"asesor":"Danna Nuñez","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":350,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385075355,"linea":3126269244,"asesor":"Daniela Caro","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":351,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386419332,"linea":3107417780,"asesor":"Daniela Caro","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":352,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386690243,"linea":3052274471,"asesor":"Daniela Caro","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":353,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386635872,"linea":3177097835,"asesor":"Daniela Caro","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":354,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386489752,"linea":3144523396,"asesor":"Daniela Caro","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":355,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384183636,"linea":3023120699,"asesor":"Daniela Caro","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":356,"tipo":"LINEA NUEVA","subTipo":"pendiente","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384452251,"linea":3027470674,"asesor":"Daniela Caro","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":357,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385370818,"linea":3247142577,"asesor":"Carolay Zurita","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":358,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":381283659,"linea":3143374537,"asesor":"Carolay Zurita","fecha":"15/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":359,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":379913702,"linea":3014728816,"asesor":"Carolay Zurita","fecha":"09/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":360,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385710154,"linea":3005294536,"asesor":"Brenda Meza","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":361,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385109641,"linea":3151580579,"asesor":"Brenda Meza","fecha":"04/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":362,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386430856,"linea":3025338219,"asesor":"Brenda Meza","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":363,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386458956,"linea":3243762419,"asesor":"Brenda Meza","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":364,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385704185,"linea":3238186592,"asesor":"Brenda Meza","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":365,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384288589,"linea":3058523246,"asesor":"Brenda Meza","fecha":"29/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":366,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":384527535,"linea":3164646922,"asesor":"Brenda Meza","fecha":"30/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":54990,"valorSinIva":44541.9},{"id":367,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386664697,"linea":3181152033,"asesor":"Yuranis Sanchez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":368,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386641233,"linea":3004843934,"asesor":"Yamil Gutiérrez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":369,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385969220,"linea":3132710637,"asesor":"Yamil Gutiérrez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":370,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385533957,"linea":3022621865,"asesor":"Yamil Gutiérrez","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":371,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385866247,"linea":3052319198,"asesor":"Wendy Orozco","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":372,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386669452,"linea":3204318691,"asesor":"Wendy Orozco","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":373,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385853757,"linea":3244720578,"asesor":"Wendy Orozco","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":374,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385805819,"linea":3019313298,"asesor":"Wendy Orozco","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":375,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385561264,"linea":3023176853,"asesor":"Adament Correa","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":376,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382860050,"linea":3244950444,"asesor":"Valery Camero","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":377,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382706966,"linea":3007780941,"asesor":"Valery Camero","fecha":"21/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":378,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382860050,"linea":3244937337,"asesor":"Valery Camero","fecha":"22/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":379,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385690660,"linea":3012694062,"asesor":"Shery Jaramillo","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":380,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386671193,"linea":3208066866,"asesor":"Shery Jaramillo","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":381,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385973017,"linea":3128233997,"asesor":"Shery Jaramillo","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":382,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385356471,"linea":3224633035,"asesor":"Raul Rodriguez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":383,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":384179403,"linea":3106137991,"asesor":"Alex Mackenzie","fecha":"28/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":384,"tipo":"MIGRACIÓN","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385520569,"linea":3237097977,"asesor":"Alex Mackenzie","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":385,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385824611,"linea":3015675036,"asesor":"Natalie Ramirez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":386,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386387154,"linea":3216987799,"asesor":"Natalie Ramirez","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":387,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385332486,"linea":3225267417,"asesor":"Natalie Ramirez","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":388,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386668523,"linea":3117534979,"asesor":"Natalie Ramirez","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":389,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385979783,"linea":3145861393,"asesor":"Mileids Ramirez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":390,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385964759,"linea":3233341159,"asesor":"Mileids Ramirez","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":391,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385368352,"linea":3013461582,"asesor":"Mayerlis Mendoza","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":392,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":381423241,"linea":3012482145,"asesor":"Mayerlis Mendoza","fecha":"16/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":393,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382670013,"linea":3017975307,"asesor":"Mayerlis Mendoza","fecha":"21/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":394,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":383197754,"linea":3244979704,"asesor":"Mayerlis Mendoza","fecha":"24/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":395,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":381427078,"linea":3012508625,"asesor":"Mayerlis Mendoza","fecha":"16/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":396,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386640996,"linea":3014703265,"asesor":"Luis Marrugo","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":397,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382436973,"linea":3016648268,"asesor":"Luis Marrugo","fecha":"20/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":398,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385965220,"linea":3011393201,"asesor":"Jose Aragon","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":399,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385801346,"linea":3137745867,"asesor":"Jorge Altamar","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":400,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385813831,"linea":3001272518,"asesor":"Hillary Peña","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":401,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":386650610,"linea":3012272271,"asesor":"Hillary Peña","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":402,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386614125,"linea":3112340064,"asesor":"Hillary Peña","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":403,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385680489,"linea":3008520590,"asesor":"Hillary Peña","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":404,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386464288,"linea":3205639019,"asesor":"Hillary Peña","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":405,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385827248,"linea":3244343289,"asesor":"Hillary Peña","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":406,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385722706,"linea":3022635777,"asesor":"Hassan Montes","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":407,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385973459,"linea":3134465360,"asesor":"Hassan Montes","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":408,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386643708,"linea":3118486891,"asesor":"Hassan Montes","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":409,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":386451168,"linea":3113094339,"asesor":"Hassan Montes","fecha":"11/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":410,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385963717,"linea":3155523754,"asesor":"Hassan Montes","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":411,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":385796750,"linea":3244222408,"asesor":"Hassan Montes","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":412,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":386670125,"linea":3022080767,"asesor":"Hassan Montes","fecha":"12/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":413,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":384837722,"linea":3011906197,"asesor":"Estefany Campo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":414,"tipo":"PORTABILIDAD","subTipo":"","estado":"Esperando respuesta de ABD","resultado":"Procede","tipoEntrega":"","nOrden":384837722,"linea":3015939371,"asesor":"Estefany Campo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":415,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":384822093,"linea":3008177228,"asesor":"Estefany Campo","fecha":"02/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":416,"tipo":"PORTABILIDAD","subTipo":"","estado":"Cancelado","resultado":"Procede","tipoEntrega":"","nOrden":382461677,"linea":3014592677,"asesor":"Estefany Campo","fecha":"20/04/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":417,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385796158,"linea":3227862565,"asesor":"Danna Nuñez","fecha":"08/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":418,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385367175,"linea":3006989586,"asesor":"Carolay Zurita","fecha":"05/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":419,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385505399,"linea":3007344098,"asesor":"Carolay Zurita","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":420,"tipo":"PORTABILIDAD","subTipo":"","estado":"EN TRANSITO","resultado":"Procede","tipoEntrega":"","nOrden":385504041,"linea":3006990741,"asesor":"Carolay Zurita","fecha":"06/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":421,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385973967,"linea":3023587654,"asesor":"Brenda Meza","fecha":"09/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9},{"id":422,"tipo":"PORTABILIDAD","subTipo":"","estado":"COMPLETADO","resultado":"Procede","tipoEntrega":"","nOrden":385688311,"linea":3045584445,"asesor":"Brenda Meza","fecha":"07/05/2026","estadoPago":"FACTURA 0 PESOS","valorIva":64990,"valorSinIva":52641.9}];
+DATA.forEach(function(r,i){if(r.id===undefined)r.id=i;});
+var nextId=DATA.length+1000;
+var SUPH="c30e4ced54fa0989fee90f50679921ba1237fd1885adfe25722d58256c4a7379";
+var ADVH={"129cd3ae310be822c00a4cb2c2ede3f68e23ab3baf30aa7b485322a1f8a73881":"Jose Aragon","72236afbba41aae33d14cf3826b9d2f94be8387a59cd933c240d06c19ec721bd":"Natalie Ramirez","a02514fae63211631808a693880444a1e4684de0c4c9bbb6bc9a2cc8d78e0d19":"Carolay Zurita","71ae64dc175726c28b8f27474b6af7e235960d0dad0ca041a327955d9b0fe2fe":"Mayerlis Mendoza","7114c6719337e401b115cd218b4ad8b9453f1c1538b71c14aceec93092d42aa3":"Luis Marrugo","ac9290e3541fd4901ecc973103d9897b44906f98522b0fa74944a0a80ad3aa8c":"Emilin Collazo","575c583bdc809e7953c8f13b8a1bed51d4aa37f706890ddbd3bb781666b47ebf":"Mileids Ramirez","326bbb93054d3ead01d9717009edaa3aad1fc7c7f472b87d3c8ce9589cba7e01":"Daniela Caro","a4666508f2700feea09c0ba6e1df1f90d21a95d30dbca4d3ae1a0113d756502e":"Hillary Peña","24ffa514d2792aee82aab344626d66b90c702f59fd051c2225eb27604840ba19":"Estefany Campo","34be21f5b81f3c6cc72823a3ff535bb89c8adb50e4a4f7fd93b7b5f584a244d1":"Stephany Benedetti","708c7822e9ac5725f68b1bbf27683ef7abdc317bdb713e3a01af76516bfb6918":"Wendy Orozco","dbe29d5142e41742739d8cef4c02d9567083327dfad61aa420da6d3410a72b3f":"Mariana Huertas","1a8d33b5f13ae004855a9f24b317864beacee32232f959063654d0137b03389b":"Stefany Castro","9266356b5fe1ebb674336b03d99c2389aa8e858bb55ae6c7e9acf8187b99fd00":"Alex Mackenzie","725282aa13bb7ba34e600d1bc82d7ed2e2e0db14902b0f7e0263616346354679":"Isabel Iglesias","aa8e82b35d1d924e8e38be5e31adc84ba54fd19c7659811669ae73c6800ba95a":"Anderson Manjarres","8cb381d121a0bc80c0a1f8fc7f3ea42486cab0410c93c210dfb1d3153f31f96a":"Ximena Villarreal","e61c8cabd1ded9eeac237316b825d054b5976c7a70c725adff43b0b7cc5d3d7b":"Adament Correa","b6b4e3493f6c125fa31299670ac9b4371c8b718aacf52b005a29e1b4a86a4e98":"Jorge Altamar","5a2becf9950fc2cd8ec7d6ca7585c17f097af6cda4de6bb4af339fe79b2421d8":"Hassan Montes","c23fff02a0cf8c0336dd36659899c0a6f9d3d3ad81622a3cf8b70d89bfcb2a68":"Brenda Meza","78ec38750feccc83fc52db520998dffb29a15fb034b84224187ef5b23dd407e2":"Karla Olivares","eeb3ec37a8a58498ef7aa54c7da3d3537b265a152f524f5ff66f26dd65abc858":"Danna Nuñez","36dda94781072bd902908014d103c997e480e0a43b8235dac8fc50c58b21c265":"Merly Ortiz","0fff178883be16ec555d27eac4685d576e560757d203aaaf0e096c3a2e41a34c":"Yuranis Sanchez","c12705ed58cf01f43369c09539f383fae60a2e0773fecefd74636225c06f4b09":"Raul Rodriguez","e95cd1c0aee806e7a73c54c99b6e4ec7e5adb96f39acfb8a446fe4ae7a8b4347":"Yamil Gutiérrez","14fc73136f3f3db912f3e6a6a2f7e4a662ba2d263a97bbdb4dcd53f0c835934c":"Shery Jaramillo"};
+var ACTA=["Adament Correa","Alex Mackenzie","Anderson Manjarres","Brenda Meza","Carolay Zurita","Daniela Caro","Danna Nuñez","Emilin Collazo","Estefany Campo","Hassan Montes","Hillary Peña","Isabel Iglesias","Jorge Altamar","Jose Aragon","Karla Olivares","Luis Marrugo","Mariana Huertas","Mayerlis Mendoza","Merly Ortiz","Mileids Ramirez","Natalie Ramirez","Raul Rodriguez","Shery Jaramillo","Stefany Castro","Stephany Benedetti","Wendy Orozco","Ximena Villarreal","Yamil Gutiérrez","Yuranis Sanchez"];
+var ESTS=["COMPLETADO", "EN TRANSITO", "Cancelado", "Esperando respuesta de ABD", "PEDIDO EN TIENDA", "En Progreso", "Relanzado"];
+var META_A=50, META_F=2300000;
+var EL={"COMPLETADO":"Completado","EN TRANSITO":"En tránsito","Cancelado":"Cancelado",
   "Esperando respuesta de ABD":"Esp. ABD","PEDIDO EN TIENDA":"En tienda",
   "En Progreso":"En progreso","Relanzado":"Relanzado"};
-const EBADGE = {"COMPLETADO":"bg","Cancelado":"br","EN TRANSITO":"by",
+var EB={"COMPLETADO":"bg","Cancelado":"br","EN TRANSITO":"by",
   "Esperando respuesta de ABD":"br","PEDIDO EN TIENDA":"by","En Progreso":"bb","Relanzado":"bc"};
-const ECOLOR = {"COMPLETADO":"#4ade80","EN TRANSITO":"#facc15","Cancelado":"#f87171",
+var EC={"COMPLETADO":"#4ade80","EN TRANSITO":"#facc15","Cancelado":"#f87171",
   "Esperando respuesta de ABD":"#ef4444","PEDIDO EN TIENDA":"#fb923c",
   "En Progreso":"#60a5fa","Relanzado":"#c084fc"};
+var cu=null;
 
-let DATA = [];
-let currentUser = null;
-let isSaving = false;
-
-// ── SHA-256
-async function sha256(s){
-  const buf = await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s.trim()));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+async function h256(s){
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s.trim()));
+  return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
 }
-
-// ── EFECTIVIDAD
-function esActiva(r){
-  if(r.resultado&&r.resultado.toLowerCase().includes('no procede')) return false;
-  if(r.tipo==='LINEA NUEVA') return r.estado==='COMPLETADO'&&r.estadoPago==='PAGADA';
+function ea(r){
+  if(r.resultado&&r.resultado.toLowerCase().indexOf('no procede')>=0)return false;
+  if(r.tipo==='LINEA NUEVA')return r.estado==='COMPLETADO'&&r.estadoPago==='PAGADA';
   return r.estado==='COMPLETADO';
 }
+function show(id){document.getElementById(id).style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
 
-// ══════════════════ API CALLS ══════════════════
-async function fetchDatos(){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('PEGAR')){
-    // Modo sin conexión: datos vacíos
-    DATA=[];
-    return;
-  }
-  try{
-    const resp = await fetch(SCRIPT_URL+'?t='+Date.now());
-    const json = await resp.json();
-    if(json.status==='ok') DATA = json.data;
-    else console.error('Error Sheets:', json.message);
-  } catch(e){
-    console.error('Error fetch:', e);
-  }
+async function login(){
+  var c=document.getElementById('ci').value.trim();
+  var e=document.getElementById('le');
+  if(!c){e.textContent='Ingresa tu cédula.';e.style.display='block';return;}
+  e.style.display='none';
+  var h=await h256(c);
+  if(h===SUPH){cu={r:'sup'};hide('ls');show('sa');initSup();}
+  else if(ADVH[h]){cu={r:'as',n:ADVH[h]};hide('ls');show('aa');initAs();}
+  else{e.textContent='Cédula no reconocida. Verifica e intenta de nuevo.';e.style.display='block';document.getElementById('ci').value='';}
 }
+function logout(){cu=null;hide('sa');hide('aa');show('ls');document.getElementById('ci').value='';document.getElementById('le').style.display='none';}
 
-async function apiCall(body){
-  if(!SCRIPT_URL||SCRIPT_URL.includes('PEGAR')) return {status:'ok'};
-  mostrarGuardando(true);
-  try{
-    const resp = await fetch(SCRIPT_URL, {
-      method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(body),
-      redirect:'follow'
-    });
-    const json = await resp.json();
-    return json;
-  } catch(e){
-    console.error('Error API:', e);
-    return {status:'error', message: e.message};
-  } finally{
-    mostrarGuardando(false);
-  }
+// ── SUP
+function initSup(){
+  document.getElementById('ts').textContent=new Date().toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'});
+  var s=document.getElementById('fa');
+  var as=[...new Set(DATA.map(function(r){return r.asesor;}))].sort();
+  as.forEach(function(a){var o=document.createElement('option');o.value=a;o.textContent=a;s.appendChild(o);});
+  rSup();
 }
-
-function mostrarGuardando(v){
-  document.getElementById('saving-indicator').style.display = v?'block':'none';
+function fSup(){
+  var t=document.getElementById('ft').value,a=document.getElementById('fa').value;
+  return DATA.filter(function(r){return(!t||r.tipo===t)&&(!a||r.asesor===a);});
 }
-
-// ══════════════════ LOGIN ══════════════════
-async function intentarLogin(){
-  const cedula = document.getElementById('cedula-input').value.trim();
-  const errEl = document.getElementById('login-error');
-  if(!cedula){errEl.textContent='Ingresa tu cédula.';errEl.style.display='block';return;}
-  errEl.style.display='none';
-  const h = await sha256(cedula);
-  if(h===SUPERVISOR_HASH){
-    currentUser={role:'supervisor'};
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('sup-app').style.display='block';
-    await cargarYMostrarSup();
-  } else if(ADVISOR_HASHES[h]){
-    currentUser={role:'asesor',nombre:ADVISOR_HASHES[h]};
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('asesor-app').style.display='block';
-    await cargarYMostrarAsesor();
-  } else {
-    errEl.textContent='Cédula no reconocida. Verifica e intenta de nuevo.';
-    errEl.style.display='block';
-    document.getElementById('cedula-input').value='';
-  }
-}
-
-function logout(){
-  currentUser=null; DATA=[];
-  document.getElementById('sup-app').style.display='none';
-  document.getElementById('asesor-app').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('cedula-input').value='';
-  document.getElementById('login-error').style.display='none';
-}
-
-async function recargarDatos(){
-  await fetchDatos();
-  if(currentUser?.role==='supervisor') renderSup();
-  else renderAsesor();
-}
-
-// ══════════════════ SUPERVISOR ══════════════════
-async function cargarYMostrarSup(){
-  document.getElementById('ts-sup').textContent='WOM Colombia · '+new Date().toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'});
-  mostrarLoadingSup();
-  await fetchDatos();
-  const selA=document.getElementById('fil-asesor');
-  if(selA.options.length===1){
-    [...new Set(DATA.map(r=>r.asesor))].sort().forEach(a=>{
-      const o=document.createElement('option');o.value=a;o.textContent=a;selA.appendChild(o);
-    });
-  }
-  renderSup();
-}
-
-function mostrarLoadingSup(){
-  ['alertas','efectividad','todos-pedidos'].forEach(id=>{
-    document.getElementById(id).innerHTML='<div class="loading-full"><div class="spinner" style="width:28px;height:28px;border-width:3px"></div><span>Cargando datos de Sheets...</span></div>';
-  });
-}
-
-function filtrarSup(){
-  const t=document.getElementById('fil-tipo').value, a=document.getElementById('fil-asesor').value;
-  return DATA.filter(r=>(!t||r.tipo===t)&&(!a||r.asesor===a));
-}
-
-function renderSup(){
-  const d=filtrarSup();
-  const tot=d.length, act=d.filter(esActiva).length,
-    tr=d.filter(r=>r.estado==='EN TRANSITO').length,
-    canc=d.filter(r=>r.estado==='Cancelado').length,
-    abd=d.filter(r=>r.estado==='Esperando respuesta de ABD').length,
+function rSup(){
+  var d=fSup();
+  var tot=d.length,act=d.filter(ea).length,tr=d.filter(function(r){return r.estado==='EN TRANSITO';}).length,
+    ca=d.filter(function(r){return r.estado==='Cancelado';}).length,
+    ab=d.filter(function(r){return r.estado==='Esperando respuesta de ABD';}).length,
     pct=tot>0?Math.round(act/tot*100):0;
-  document.getElementById('kpis-sup').innerHTML=`
-    <div class="kpi blue"><div class="num">${tot}</div><div class="lbl">Total cantadas</div></div>
-    <div class="kpi green"><div class="num">${act}</div><div class="lbl">Activas</div></div>
-    <div class="kpi yellow"><div class="num">${tr}</div><div class="lbl">En tránsito</div></div>
-    <div class="kpi red"><div class="num">${canc}</div><div class="lbl">Canceladas</div></div>
-    <div class="kpi orange"><div class="num">${abd}</div><div class="lbl">Esp. ABD</div></div>
-    <div class="kpi purple"><div class="num">${pct}%</div><div class="lbl">Efectividad</div></div>`;
-  renderAlertasSup(d);
-  renderEfectividadSup(d);
-  renderTodosSup(d);
+  document.getElementById('ks').innerHTML=
+    '<div class="kpi bl"><div class="n">'+tot+'</div><div class="l">Total cantadas</div></div>'+
+    '<div class="kpi gr"><div class="n">'+act+'</div><div class="l">Activas</div></div>'+
+    '<div class="kpi ye"><div class="n">'+tr+'</div><div class="l">En tránsito</div></div>'+
+    '<div class="kpi re"><div class="n">'+ca+'</div><div class="l">Canceladas</div></div>'+
+    '<div class="kpi or"><div class="n">'+ab+'</div><div class="l">Esp. ABD</div></div>'+
+    '<div class="kpi pu"><div class="n">'+pct+'%</div><div class="l">Efectividad</div></div>';
+  rAl(d);rEf(d);rTd(d);
 }
-
-function renderAlertasSup(d){
-  const transito=d.filter(r=>r.estado==='EN TRANSITO'),
-    abd=d.filter(r=>r.estado==='Esperando respuesta de ABD'),
-    canc=d.filter(r=>r.estado==='Cancelado');
-  const act=d.filter(esActiva).length, pct=d.length>0?Math.round(act/d.length*100):0;
-  const pa={};
-  d.forEach(r=>{
-    if(!pa[r.asesor])pa[r.asesor]={cant:0,act:0,tr:0,abd:0};
-    pa[r.asesor].cant++;if(esActiva(r))pa[r.asesor].act++;
-    if(r.estado==='EN TRANSITO')pa[r.asesor].tr++;
-    if(r.estado==='Esperando respuesta de ABD')pa[r.asesor].abd++;
-  });
-  const bajos=Object.entries(pa).filter(([,v])=>v.cant>=2&&v.act/v.cant<0.75)
-    .sort((a,b)=>a[1].act/a[1].cant-b[1].act/b[1].cant);
-  const rs='display:flex;justify-content:space-between;padding:4px 6px;border-radius:4px;margin-bottom:3px;font-size:11px;align-items:center';
-  document.getElementById('alertas').innerHTML=`
-  <div class="g2">
-    <div class="panel">
-      <div class="phdr" style="background:#0a1f12"><span class="dot" style="background:#4ade80"></span>Efectividad del equipo</div>
-      <div class="pbody">
-        <div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
-          <div style="text-align:center">
-            <div style="font-size:40px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:${pct>=75?'#4ade80':'#f87171'};line-height:1">${pct}%</div>
-            <div style="font-size:10px;color:#64748b;margin-top:2px">${act} / ${d.length}</div>
-          </div>
-          <div style="flex:1">
-            <div style="font-size:10px;color:#64748b;margin-bottom:3px">Meta 75%</div>
-            <div class="eff-bar"><div class="eff-fill" style="width:${Math.min(pct,100)}%;background:${pct>=75?'#4ade80':'#f87171'}"></div></div>
-            <div class="alert-row ${pct>=75?'ag':'ar'}" style="margin-top:8px;margin-bottom:0">
-              <div class="arow-icon">${pct>=75?'✅':'⚠️'}</div>
-              <div class="arow-info"><strong>${pct>=75?'Equipo en objetivo':'Bajo el 75%'}</strong><p>${bajos.length} asesor(es) requieren atención</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="phdr" style="background:#1a0a00"><span class="dot" style="background:#fb923c"></span>🚨 Bajo 75% — Tips</div>
-      <div class="pbody scrollable">
-        ${bajos.length===0?'<div class="alert-row ag"><div class="arow-icon">🏆</div><div class="arow-info"><strong>Todo el equipo sobre el 75%</strong></div></div>'
-          :bajos.map(([n,v])=>{const p=Math.round(v.act/v.cant*100);
-            const tips=[];
-            if(v.abd>0)tips.push(`🔑 ${v.abd} pedido(s) ABD — pedir NIP nuevo`);
-            if(v.tr>0)tips.push(`🚚 ${v.tr} en tránsito — seguimiento diario`);
-            tips.push('📱 Activar por eSIM = más rápido');
-            return `<div style="background:#1a0f00;border:1px solid #92400e;border-radius:7px;padding:10px;margin-bottom:8px">
-              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-                <span style="color:#fed7aa;font-weight:600">⚠️ ${n}</span>
-                <span style="font-family:'IBM Plex Mono',monospace;color:#f87171;font-weight:700">${p}% (${v.act}/${v.cant})</span>
-              </div>
-              <ul style="padding-left:14px;font-size:11px;line-height:1.7">${tips.map(t=>`<li style="color:#fde68a">${t}</li>`).join('')}</ul>
-            </div>`;
-          }).join('')}
-      </div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="panel">
-      <div class="phdr" style="background:#1a2200"><span class="dot" style="background:#facc15"></span>🚚 En tránsito — ${transito.length}</div>
-      <div class="pbody">
-        <div class="alert-row ay"><div class="arow-icon">⏰</div><div class="arow-info"><strong>Revisión diaria</strong><p>+2 días → escalar a logística</p></div><div class="arow-badge">${transito.length}</div></div>
-        <div class="scrollable" style="margin-top:6px">${transito.map(r=>`<div style="${rs};background:#141e10"><span style="color:#d4d4aa">${r.asesor}</span><span style="color:#71717a;font-family:'IBM Plex Mono',monospace">${r.nOrden}</span><span style="color:#fde68a">${r.fecha}</span></div>`).join('')}</div>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="phdr" style="background:#1f0a0a"><span class="dot" style="background:#f87171"></span>🔴 ABD — ${abd.length} · Cancelados — ${canc.length}</div>
-      <div class="pbody">
-        <div class="alert-row ar"><div class="arow-icon">🔑</div><div class="arow-info"><strong>ABD: cliente debe solicitar NIP nuevo</strong></div><div class="arow-badge">${abd.length}</div></div>
-        <div class="scrollable" style="max-height:120px;margin-top:4px">${abd.map(r=>`<div style="${rs};background:#1a0505"><span style="color:#fca5a5">${r.asesor}</span><span style="color:#71717a;font-family:'IBM Plex Mono',monospace">${r.nOrden}</span><span style="color:#f87171">${r.fecha}</span></div>`).join('')}</div>
-        <div class="alert-row ap" style="margin-top:8px"><div class="arow-icon">💡</div><div class="arow-info"><strong>Cancelados: revisar refacturación</strong></div><div class="arow-badge">${canc.length}</div></div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function renderEfectividadSup(d){
-  const pa={};
-  d.forEach(r=>{
-    if(!pa[r.asesor])pa[r.asesor]={cant:0,act:0,tr:0,canc:0,abd:0,sSiva:0};
-    pa[r.asesor].cant++;if(esActiva(r)){pa[r.asesor].act++;pa[r.asesor].sSiva+=(r.valorSinIva||0);}
-    if(r.estado==='EN TRANSITO')pa[r.asesor].tr++;
-    if(r.estado==='Cancelado')pa[r.asesor].canc++;
-    if(r.estado==='Esperando respuesta de ABD')pa[r.asesor].abd++;
-  });
-  const filas=Object.entries(pa).sort((a,b)=>b[1].act/b[1].cant-a[1].act/a[1].cant);
-  const totC=filas.reduce((s,[,v])=>s+v.cant,0),totA=filas.reduce((s,[,v])=>s+v.act,0);
-  const pctG=totC>0?Math.round(totA/totC*100):0;
-  const fmt=n=>n>0?'$'+Math.round(n).toLocaleString('es-CO'):'—';
-  let h=`<div class="panel"><div class="phdr"><span class="dot" style="background:#60a5fa"></span>Efectividad por asesor — ${filas.length} asesores · ${totC} pedidos</div>
-  <div style="overflow-x:auto"><table><thead><tr>
-    <th>#</th><th>Asesor</th><th>Cantadas</th><th>Activas</th><th colspan="2">% Efect.</th>
-    <th>vs Meta 50</th><th>Factura s/IVA</th><th>Tránsito</th><th>ABD</th><th>Canceladas</th>
-  </tr></thead><tbody>`;
-  filas.forEach(([n,v],i)=>{
-    const p=v.cant>0?Math.round(v.act/v.cant*100):0,al=p<75&&v.cant>=2;
-    const bar=p>=80?'#4ade80':p>=75?'#22d3ee':p>=60?'#facc15':'#f87171';
-    const mp=Math.min(Math.round(v.act/META_ACTIVAS*100),100);
-    const mb=mp>=100?'#4ade80':mp>=70?'#facc15':'#f87171';
-    h+=`<tr>
-      <td style="color:#475569">${i+1}</td>
-      <td style="font-weight:500;color:${al?'#fca5a5':'#e2e8f0'};white-space:nowrap">${al?'⚠️ ':''}${n}</td>
-      <td style="text-align:center;font-family:'IBM Plex Mono',monospace">${v.cant}</td>
-      <td style="text-align:center;font-family:'IBM Plex Mono',monospace;color:#4ade80">${v.act}</td>
-      <td><span class="badge ${p>=75?'bg':p>=60?'by':'br'}">${p}%</span></td>
-      <td style="min-width:70px"><div class="eff-bar"><div class="eff-fill" style="width:${p}%;background:${bar}"></div></div></td>
-      <td style="min-width:110px"><div style="display:flex;align-items:center;gap:5px">
-        <span style="font-size:10px;color:${mb};font-family:'IBM Plex Mono',monospace;white-space:nowrap">${v.act}/${META_ACTIVAS}</span>
-        <div class="eff-bar" style="flex:1"><div class="eff-fill" style="width:${mp}%;background:${mb}"></div></div>
-      </div></td>
-      <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#94a3b8;font-size:10px">${fmt(v.sSiva)}</td>
-      <td style="text-align:center;color:${v.tr>0?'#facc15':'#334155'};font-family:'IBM Plex Mono',monospace">${v.tr||'—'}</td>
-      <td style="text-align:center;color:${v.abd>0?'#f87171':'#334155'};font-family:'IBM Plex Mono',monospace">${v.abd||'—'}</td>
-      <td style="text-align:center;color:${v.canc>0?'#c084fc':'#334155'};font-family:'IBM Plex Mono',monospace">${v.canc||'—'}</td>
-    </tr>`;
-  });
-  h+=`<tr class="total-row"><td></td><td>TOTAL</td><td style="text-align:center;font-family:'IBM Plex Mono',monospace">${totC}</td>
-    <td style="text-align:center;font-family:'IBM Plex Mono',monospace;color:#4ade80">${totA}</td>
-    <td><span class="badge ${pctG>=75?'bg':'br'}">${pctG}%</span></td>
-    <td colspan="6"></td></tr></tbody></table></div></div>`;
-  document.getElementById('efectividad').innerHTML=h;
-}
-
-function renderTodosSup(d){
-  let h=`<div class="panel"><div class="phdr" style="justify-content:space-between">
-    <span style="display:flex;gap:7px;align-items:center"><span class="dot" style="background:#60a5fa"></span>Todos los pedidos (${d.length})</span>
-    <span style="font-size:10px;color:#475569">Edita directamente — se guarda en Sheets</span>
-  </div><div style="overflow-x:auto;max-height:560px;overflow-y:auto"><table><thead><tr>
-    <th>Asesor</th><th>Tipo</th><th>Entrega</th><th>Estado</th><th>Procede</th>
-    <th>N° Orden</th><th>Línea</th><th>Fecha</th><th>Con IVA</th><th>Sin IVA</th><th>¿Pagó?</th>
-  </tr></thead><tbody>`;
-  d.forEach(r=>{
-    const isNL=r.tipo==='LINEA NUEVA';
-    const nP=r.resultado&&r.resultado.toLowerCase().includes('no procede');
-    h+=`<tr>
-      <td style="white-space:nowrap;font-size:11px">${r.asesor}</td>
-      <td><span class="badge bb" style="font-size:9px">${isNL?'NL'+(r.estadoPago==='PAGADA'?' ✅':' ⏳'):r.tipo.slice(0,4)}</span></td>
-      <td><select onchange="guardarCampo(${r.id},'tipoEntrega',this.value)" style="font-size:10px;padding:3px 5px;min-width:70px;border-color:#334155">
-        <option value="">—</option>
-        <option value="esim" ${r.tipoEntrega==='esim'?'selected':''}>📱 eSIM</option>
-        <option value="tienda" ${r.tipoEntrega==='tienda'?'selected':''}>🏪 Tienda</option>
-        <option value="domicilio" ${r.tipoEntrega==='domicilio'?'selected':''}>🚚 Dom.</option>
-      </select></td>
-      <td><select onchange="guardarEstado(${r.id},this.value)" style="font-size:10px;padding:3px 5px;min-width:115px;border-color:${ECOLOR[r.estado]||'#334155'};color:${ECOLOR[r.estado]||'#e2e8f0'}">
-        ${ESTADOS.map(e=>`<option value="${e}"${e===r.estado?' selected':''}>${ELABEL[e]||e}</option>`).join('')}
-      </select></td>
-      <td><select onchange="guardarCampo(${r.id},'resultado',this.value)" style="font-size:10px;padding:3px 5px">
-        <option value="Procede" ${!nP?'selected':''}>✅ Sí</option>
-        <option value="No Procede" ${nP?'selected':''}>❌ No</option>
-      </select></td>
-      <td style="font-family:'IBM Plex Mono',monospace;color:#64748b;font-size:10px">${r.nOrden||'—'}</td>
-      <td style="font-family:'IBM Plex Mono',monospace;color:#475569;font-size:10px">${r.linea||'—'}</td>
-      <td style="color:#475569;white-space:nowrap;font-size:10px">${r.fecha||'—'}</td>
-      <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#94a3b8;font-size:10px">${r.valorIva?'$'+Number(r.valorIva).toLocaleString('es-CO'):'—'}</td>
-      <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#64748b;font-size:10px">${r.valorSinIva?'$'+Number(r.valorSinIva).toLocaleString('es-CO'):'—'}</td>
-      <td>${isNL?`<select onchange="guardarPago(${r.id},this.value)" style="font-size:10px;padding:3px 5px">
-        <option value="SIN PAGO" ${r.estadoPago!=='PAGADA'?'selected':''}>⏳ Pdte</option>
-        <option value="PAGADA" ${r.estadoPago==='PAGADA'?'selected':''}>✅ Pagó</option>
-      </select>`:'<span style="color:#334155;font-size:10px">N/A</span>'}</td>
-    </tr>`;
-  });
-  h+=`</tbody></table></div></div>`;
-  document.getElementById('todos-pedidos').innerHTML=h;
-}
-
-function switchTabSup(id,el){
-  document.querySelectorAll('#sup-app .tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('#sup-app .section').forEach(s=>s.classList.remove('active'));
+function stSup(id,el){
+  document.querySelectorAll('#sa .tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#sa .sec').forEach(function(s){s.classList.remove('active');});
   el.classList.add('active');document.getElementById(id).classList.add('active');
 }
 
-// ══════════════════ ASESOR ══════════════════
-async function cargarYMostrarAsesor(){
-  const nombre=currentUser.nombre;
-  document.getElementById('asesor-nombre-hdr').textContent=nombre;
-  const hoy=new Date();
-  document.getElementById('f-fecha').value=`${hoy.getFullYear()}-${String(hoy.getMonth()+1).padStart(2,'0')}-${String(hoy.getDate()).padStart(2,'0')}`;
-  document.getElementById('mis-pedidos-body').innerHTML='<div class="loading-full"><div class="spinner" style="width:24px;height:24px;border-width:3px"></div><span>Cargando tus pedidos...</span></div>';
-  await fetchDatos();
-  renderAsesor();
-}
-
-function renderAsesor(){
-  const nombre=currentUser.nombre;
-  const mis=DATA.filter(r=>r.asesor===nombre);
-  const activas=mis.filter(esActiva);
-  const nAct=activas.length;
-  const factura=activas.reduce((s,r)=>s+(r.valorSinIva||0),0);
-  const pctAct=Math.min(Math.round(nAct/META_ACTIVAS*100),100);
-  const pctFact=Math.min(Math.round(factura/META_FACTURA*100),100);
-  const pctConv=mis.length>0?Math.round(nAct/mis.length*100):0;
-  const bA=pctAct>=100?'#4ade80':pctAct>=70?'#facc15':'#f87171';
-  const bF=pctFact>=100?'#4ade80':pctFact>=70?'#facc15':'#f87171';
-
-  document.getElementById('asesor-metas').innerHTML=`
-    <div class="meta-card">
-      <div class="meta-label">🎯 Meta ventas activas</div>
-      <div class="meta-nums">
-        <div class="meta-actual" style="color:${bA}">${nAct}</div>
-        <div class="meta-total">/ ${META_ACTIVAS} activas</div>
-        <div class="meta-pct" style="color:${bA}">${pctAct}%</div>
-      </div>
-      <div class="eff-bar"><div class="eff-fill" style="width:${pctAct}%;background:${bA}"></div></div>
-      <div style="font-size:10px;color:#475569;margin-top:5px">${nAct>=META_ACTIVAS?'✅ ¡Meta alcanzada!':'Faltan '+(META_ACTIVAS-nAct)+' ventas'}</div>
-    </div>
-    <div class="meta-card">
-      <div class="meta-label">💰 Meta facturación (sin IVA)</div>
-      <div class="meta-nums">
-        <div class="meta-actual" style="color:${bF};font-size:20px">$${Math.round(factura).toLocaleString('es-CO')}</div>
-        <div class="meta-total">/ $2.300.000</div>
-        <div class="meta-pct" style="color:${bF}">${pctFact}%</div>
-      </div>
-      <div class="eff-bar"><div class="eff-fill" style="width:${pctFact}%;background:${bF}"></div></div>
-      <div style="font-size:10px;color:#475569;margin-top:5px">${factura>=META_FACTURA?'✅ ¡Meta de factura alcanzada!':'Faltan $'+Math.round(META_FACTURA-factura).toLocaleString('es-CO')}</div>
-    </div>`;
-
-  const tr=mis.filter(r=>r.estado==='EN TRANSITO').length;
-  const abd=mis.filter(r=>r.estado==='Esperando respuesta de ABD').length;
-  const ti=mis.filter(r=>r.estado==='PEDIDO EN TIENDA').length;
-  document.getElementById('asesor-kpis').innerHTML=`
-    <div class="kpi blue"><div class="num">${mis.length}</div><div class="lbl">Mis pedidos</div></div>
-    <div class="kpi green"><div class="num">${nAct}</div><div class="lbl">Activas</div></div>
-    <div class="kpi yellow"><div class="num">${tr}</div><div class="lbl">En tránsito</div></div>
-    <div class="kpi orange"><div class="num">${ti}</div><div class="lbl">En tienda</div></div>
-    <div class="kpi purple"><div class="num">${pctConv}%</div><div class="lbl">Conversión</div></div>`;
-
-  if(mis.length===0){
-    document.getElementById('mis-pedidos-body').innerHTML='<div style="padding:20px;text-align:center;color:#475569">No tienes pedidos aún. Usa "Registrar venta".</div>';
-    return;
-  }
-  let h=`<table><thead><tr>
-    <th>Tipo</th><th>Entrega</th><th>Estado</th><th>Procede</th>
-    <th>N° Orden</th><th>Línea</th><th>Fecha</th><th>Con IVA</th><th>Sin IVA</th><th>¿Pagó?</th>
-  </tr></thead><tbody>`;
-  mis.forEach(r=>{
-    const isNL=r.tipo==='LINEA NUEVA';
-    const nP=r.resultado&&r.resultado.toLowerCase().includes('no procede');
-    h+=`<tr>
-      <td><span class="badge bb" style="font-size:9px">${isNL?'NL'+(r.estadoPago==='PAGADA'?' ✅':' ⏳'):r.tipo.slice(0,4)}</span></td>
-      <td><select onchange="guardarCampo(${r.id},'tipoEntrega',this.value)" style="font-size:10px;padding:3px 5px">
-        <option value="">—</option>
-        <option value="esim" ${r.tipoEntrega==='esim'?'selected':''}>📱 eSIM</option>
-        <option value="tienda" ${r.tipoEntrega==='tienda'?'selected':''}>🏪 Tienda</option>
-        <option value="domicilio" ${r.tipoEntrega==='domicilio'?'selected':''}>🚚 Dom.</option>
-      </select></td>
-      <td>
-        <select onchange="guardarEstado(${r.id},this.value)" style="font-size:10px;padding:3px 5px;min-width:115px;border-color:${ECOLOR[r.estado]||'#334155'};color:${ECOLOR[r.estado]||'#e2e8f0'}">
-          ${ESTADOS.map(e=>`<option value="${e}"${e===r.estado?' selected':''}>${ELABEL[e]||e}</option>`).join('')}
-        </select>
-        ${r.estado==='Esperando respuesta de ABD'?'<div class="abd-warn" style="font-size:10px">🔑 Pedir NIP nuevo al operador actual</div>':''}
-      </td>
-      <td><select onchange="guardarCampo(${r.id},'resultado',this.value)" style="font-size:10px;padding:3px 5px">
-        <option value="Procede" ${!nP?'selected':''}>✅ Sí</option>
-        <option value="No Procede" ${nP?'selected':''}>❌ No</option>
-      </select></td>
-      <td style="font-family:'IBM Plex Mono',monospace;color:#64748b;font-size:10px">${r.nOrden||'—'}</td>
-      <td style="font-family:'IBM Plex Mono',monospace;color:#475569;font-size:10px">${r.linea||'—'}</td>
-      <td style="color:#475569;white-space:nowrap;font-size:10px">${r.fecha||'—'}</td>
-      <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#94a3b8;font-size:10px">${r.valorIva?'$'+Number(r.valorIva).toLocaleString('es-CO'):'—'}</td>
-      <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:#64748b;font-size:10px">${r.valorSinIva?'$'+Number(r.valorSinIva).toLocaleString('es-CO'):'—'}</td>
-      <td>${isNL?`<select onchange="guardarPago(${r.id},this.value)" style="font-size:10px;padding:3px 5px">
-        <option value="SIN PAGO" ${r.estadoPago!=='PAGADA'?'selected':''}>⏳ Pdte</option>
-        <option value="PAGADA" ${r.estadoPago==='PAGADA'?'selected':''}>✅ Pagó</option>
-      </select>`:'<span style="color:#334155;font-size:10px">N/A</span>'}</td>
-    </tr>`;
+function rAl(d){
+  var tr=d.filter(function(r){return r.estado==='EN TRANSITO';}),
+    ab=d.filter(function(r){return r.estado==='Esperando respuesta de ABD';}),
+    ca=d.filter(function(r){return r.estado==='Cancelado';}),
+    act=d.filter(ea).length,pct=d.length>0?Math.round(act/d.length*100):0;
+  var pa={};
+  d.forEach(function(r){
+    if(!pa[r.asesor])pa[r.asesor]={c:0,a:0,t:0,ab:0};
+    pa[r.asesor].c++;if(ea(r))pa[r.asesor].a++;
+    if(r.estado==='EN TRANSITO')pa[r.asesor].t++;
+    if(r.estado==='Esperando respuesta de ABD')pa[r.asesor].ab++;
   });
-  h+=`</tbody></table>`;
-  document.getElementById('mis-pedidos-body').innerHTML=h;
+  var baj=Object.entries(pa).filter(function(x){return x[1].c>=2&&x[1].a/x[1].c<0.75;})
+    .sort(function(a,b){return a[1].a/a[1].c-b[1].a/b[1].c;});
+  var rs='display:flex;justify-content:space-between;padding:4px 6px;border-radius:4px;margin-bottom:3px;font-size:11px;align-items:center';
+  var bHtml=baj.length===0?
+    '<div class="ar ag"><div class="ai">🏆</div><div class="ainfo"><strong>Todo el equipo sobre el 75%</strong></div></div>':
+    baj.map(function(x){
+      var n=x[0],v=x[1],p=Math.round(v.a/v.c*100);
+      var tips=[];
+      if(v.ab>0)tips.push('🔑 '+v.ab+' ABD — cliente pide NIP nuevo');
+      if(v.t>0)tips.push('🚚 '+v.t+' en tránsito — seguimiento diario');
+      tips.push('📱 Activar por eSIM = más rápido');
+      return '<div style="background:#1a0f00;border:1px solid #92400e;border-radius:7px;padding:10px;margin-bottom:8px">'+
+        '<div style="display:flex;justify-content:space-between;margin-bottom:4px">'+
+        '<span style="color:#fed7aa;font-weight:600">⚠️ '+n+'</span>'+
+        '<span style="font-family:IBM Plex Mono,monospace;color:#f87171;font-weight:700">'+p+'% ('+v.a+'/'+v.c+')</span></div>'+
+        '<ul style="padding-left:14px;font-size:11px;line-height:1.7">'+
+        tips.map(function(t){return'<li style="color:#fde68a">'+t+'</li>';}).join('')+
+        '</ul></div>';
+    }).join('');
+  document.getElementById('al').innerHTML=
+    '<div class="g2">'+
+    '<div class="pnl"><div class="ph" style="background:#0a1f12"><span class="dot" style="background:#4ade80"></span>Efectividad del equipo</div>'+
+    '<div class="pb"><div style="display:flex;gap:14px;align-items:center;margin-bottom:10px">'+
+    '<div style="text-align:center"><div style="font-size:40px;font-weight:700;font-family:IBM Plex Mono,monospace;color:'+(pct>=75?'#4ade80':'#f87171')+';line-height:1">'+pct+'%</div>'+
+    '<div style="font-size:10px;color:#64748b;margin-top:2px">'+act+' / '+d.length+'</div></div>'+
+    '<div style="flex:1"><div style="font-size:10px;color:#64748b;margin-bottom:3px">Meta 75%</div>'+
+    '<div class="eb"><div class="ef" style="width:'+Math.min(pct,100)+'%;background:'+(pct>=75?'#4ade80':'#f87171')+'"></div></div>'+
+    '<div class="ar '+(pct>=75?'ag':'are')+'" style="margin-top:8px;margin-bottom:0">'+
+    '<div class="ai">'+(pct>=75?'✅':'⚠️')+'</div>'+
+    '<div class="ainfo"><strong>'+(pct>=75?'Equipo en objetivo':'Bajo el 75%')+'</strong>'+
+    '<p>'+baj.length+' asesor(es) requieren atención</p></div></div></div></div></div></div>'+
+    '<div class="pnl"><div class="ph" style="background:#1a0a00"><span class="dot" style="background:#fb923c"></span>🚨 Bajo el 75% — Tips</div>'+
+    '<div class="pb sc">'+bHtml+'</div></div></div>'+
+    '<div class="g2">'+
+    '<div class="pnl"><div class="ph" style="background:#1a2200"><span class="dot" style="background:#facc15"></span>🚚 En tránsito — '+tr.length+'</div>'+
+    '<div class="pb"><div class="ar ay"><div class="ai">⏰</div><div class="ainfo"><strong>Revisión diaria</strong><p>+2 días sin avanzar → escalar a logística</p></div><div class="ab">'+tr.length+'</div></div>'+
+    '<div class="sc" style="margin-top:6px">'+tr.map(function(r){return'<div style="'+rs+';background:#141e10"><span style="color:#d4d4aa">'+r.asesor+'</span><span style="color:#71717a;font-family:IBM Plex Mono,monospace">'+r.nOrden+'</span><span style="color:#fde68a">'+r.fecha+'</span></div>';}).join('')+'</div></div></div>'+
+    '<div class="pnl"><div class="ph" style="background:#1f0a0a"><span class="dot" style="background:#f87171"></span>🔴 ABD — '+ab.length+' · Cancelados — '+ca.length+'</div>'+
+    '<div class="pb"><div class="ar are"><div class="ai">🔑</div><div class="ainfo"><strong>ABD: cliente solicita NIP nuevo</strong></div><div class="ab">'+ab.length+'</div></div>'+
+    '<div class="sc" style="max-height:120px;margin-top:4px">'+ab.map(function(r){return'<div style="'+rs+';background:#1a0505"><span style="color:#fca5a5">'+r.asesor+'</span><span style="color:#71717a;font-family:IBM Plex Mono,monospace">'+r.nOrden+'</span><span style="color:#f87171">'+r.fecha+'</span></div>';}).join('')+'</div>'+
+    '<div class="ar ap" style="margin-top:8px"><div class="ai">💡</div><div class="ainfo"><strong>Cancelados: revisar refacturación</strong></div><div class="ab">'+ca.length+'</div></div></div></div></div>';
 }
 
-function switchTabAs(id,el){
-  document.querySelectorAll('#asesor-app .tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('#asesor-app .section').forEach(s=>s.classList.remove('active'));
+function rEf(d){
+  var pa={};
+  d.forEach(function(r){
+    if(!pa[r.asesor])pa[r.asesor]={c:0,a:0,t:0,ca:0,ab:0,sf:0};
+    pa[r.asesor].c++;if(ea(r)){pa[r.asesor].a++;pa[r.asesor].sf+=(r.valorSinIva||0);}
+    if(r.estado==='EN TRANSITO')pa[r.asesor].t++;
+    if(r.estado==='Cancelado')pa[r.asesor].ca++;
+    if(r.estado==='Esperando respuesta de ABD')pa[r.asesor].ab++;
+  });
+  var fi=Object.entries(pa).sort(function(a,b){return b[1].a/b[1].c-a[1].a/a[1].c;});
+  var tC=fi.reduce(function(s,x){return s+x[1].c;},0),tA=fi.reduce(function(s,x){return s+x[1].a;},0);
+  var pG=tC>0?Math.round(tA/tC*100):0;
+  var fmt=function(n){return n>0?'$'+Math.round(n).toLocaleString('es-CO'):'—';};
+  var h='<div class="pnl"><div class="ph"><span class="dot" style="background:#60a5fa"></span>Efectividad por asesor — '+fi.length+' asesores · '+tC+' pedidos</div>'+
+    '<div style="overflow-x:auto"><table><thead><tr>'+
+    '<th>#</th><th>Asesor</th><th>Cantadas</th><th>Activas</th><th colspan="2">% Efect.</th>'+
+    '<th>vs Meta 50</th><th>Factura s/IVA</th><th>Tránsito</th><th>ABD</th><th>Canceladas</th>'+
+    '</tr></thead><tbody>';
+  fi.forEach(function(x,i){
+    var n=x[0],v=x[1],p=v.c>0?Math.round(v.a/v.c*100):0,al=p<75&&v.c>=2;
+    var bar=p>=80?'#4ade80':p>=75?'#22d3ee':p>=60?'#facc15':'#f87171';
+    var mp=Math.min(Math.round(v.a/META_A*100),100),mb=mp>=100?'#4ade80':mp>=70?'#facc15':'#f87171';
+    h+='<tr>'+
+      '<td style="color:#475569">'+(i+1)+'</td>'+
+      '<td style="font-weight:500;color:'+(al?'#fca5a5':'#e2e8f0')+';white-space:nowrap">'+(al?'⚠️ ':'')+n+'</td>'+
+      '<td style="text-align:center;font-family:IBM Plex Mono,monospace">'+v.c+'</td>'+
+      '<td style="text-align:center;font-family:IBM Plex Mono,monospace;color:#4ade80">'+v.a+'</td>'+
+      '<td><span class="bd '+(p>=75?'bg':p>=60?'by':'br')+'">'+p+'%</span></td>'+
+      '<td style="min-width:70px"><div class="eb"><div class="ef" style="width:'+p+'%;background:'+bar+'"></div></div></td>'+
+      '<td style="min-width:110px"><div style="display:flex;align-items:center;gap:5px">'+
+      '<span style="font-size:10px;color:'+mb+';font-family:IBM Plex Mono,monospace;white-space:nowrap">'+v.a+'/'+META_A+'</span>'+
+      '<div class="eb" style="flex:1"><div class="ef" style="width:'+mp+'%;background:'+mb+'"></div></div></div></td>'+
+      '<td style="text-align:right;font-family:IBM Plex Mono,monospace;color:#94a3b8;font-size:10px">'+fmt(v.sf)+'</td>'+
+      '<td style="text-align:center;color:'+(v.t>0?'#facc15':'#334155')+';font-family:IBM Plex Mono,monospace">'+(v.t||'—')+'</td>'+
+      '<td style="text-align:center;color:'+(v.ab>0?'#f87171':'#334155')+';font-family:IBM Plex Mono,monospace">'+(v.ab||'—')+'</td>'+
+      '<td style="text-align:center;color:'+(v.ca>0?'#c084fc':'#334155')+';font-family:IBM Plex Mono,monospace">'+(v.ca||'—')+'</td></tr>';
+  });
+  h+='<tr class="tr"><td></td><td>TOTAL</td>'+
+    '<td style="text-align:center;font-family:IBM Plex Mono,monospace">'+tC+'</td>'+
+    '<td style="text-align:center;font-family:IBM Plex Mono,monospace;color:#4ade80">'+tA+'</td>'+
+    '<td><span class="bd '+(pG>=75?'bg':'br')+'">'+pG+'%</span></td>'+
+    '<td colspan="6"></td></tr></tbody></table></div></div>';
+  document.getElementById('ef').innerHTML=h;
+}
+
+function rTd(d){
+  var h='<div class="pnl"><div class="ph" style="justify-content:space-between">'+
+    '<span style="display:flex;gap:7px;align-items:center"><span class="dot" style="background:#60a5fa"></span>Todos los pedidos ('+d.length+') — edita directamente</span></div>'+
+    '<div style="overflow-x:auto;max-height:560px;overflow-y:auto"><table><thead><tr>'+
+    '<th>Asesor</th><th>Tipo</th><th>Entrega</th><th>Estado</th><th>Procede</th>'+
+    '<th>N° Orden</th><th>Línea</th><th>Fecha</th><th>Con IVA</th><th>Sin IVA</th><th>¿Pagó?</th>'+
+    '</tr></thead><tbody>';
+  d.forEach(function(r){
+    var isNL=r.tipo==='LINEA NUEVA',nP=r.resultado&&r.resultado.toLowerCase().indexOf('no procede')>=0;
+    var lbl=EL[r.estado]||r.estado;
+    h+='<tr>'+
+      '<td style="white-space:nowrap;font-size:11px">'+r.asesor+'</td>'+
+      '<td><span class="bd bb" style="font-size:9px">'+(isNL?'NL'+(r.estadoPago==='PAGADA'?' ✅':' ⏳'):r.tipo.slice(0,4))+'</span></td>'+
+      '<td><select onchange="upd('+r.id+',\'tipoEntrega\',this.value)" style="font-size:10px;padding:3px 5px;min-width:70px;border-color:#334155">'+
+        '<option value="">—</option>'+
+        '<option value="esim"'+(r.tipoEntrega==='esim'?' selected':'')+'>📱 eSIM</option>'+
+        '<option value="tienda"'+(r.tipoEntrega==='tienda'?' selected':'')+'>🏪 Tienda</option>'+
+        '<option value="domicilio"'+(r.tipoEntrega==='domicilio'?' selected':'')+'>🚚 Dom.</option>'+
+      '</select></td>'+
+      '<td><select onchange="updE('+r.id+',this.value)" style="font-size:10px;padding:3px 5px;min-width:115px;border-color:'+(EC[r.estado]||'#334155')+';color:'+(EC[r.estado]||'#e2e8f0')+'">'+
+        ESTS.map(function(e){return'<option value="'+e+'"'+(e===r.estado?' selected':'')+'>'+(EL[e]||e)+'</option>';}).join('')+
+      '</select></td>'+
+      '<td><select onchange="upd('+r.id+',\'resultado\',this.value)" style="font-size:10px;padding:3px 5px">'+
+        '<option value="Procede"'+(!nP?' selected':'')+'>✅ Sí</option>'+
+        '<option value="No Procede"'+(nP?' selected':'')+'>❌ No</option>'+
+      '</select></td>'+
+      '<td style="font-family:IBM Plex Mono,monospace;color:#64748b;font-size:10px">'+(r.nOrden||'—')+'</td>'+
+      '<td style="font-family:IBM Plex Mono,monospace;color:#475569;font-size:10px">'+(r.linea||'—')+'</td>'+
+      '<td style="color:#475569;white-space:nowrap;font-size:10px">'+(r.fecha||'—')+'</td>'+
+      '<td style="text-align:right;font-family:IBM Plex Mono,monospace;color:#94a3b8;font-size:10px">'+(r.valorIva?'$'+Number(r.valorIva).toLocaleString('es-CO'):'—')+'</td>'+
+      '<td style="text-align:right;font-family:IBM Plex Mono,monospace;color:#64748b;font-size:10px">'+(r.valorSinIva?'$'+Number(r.valorSinIva).toLocaleString('es-CO'):'—')+'</td>'+
+      '<td>'+(isNL?'<select onchange="upd('+r.id+',\'estadoPago\',this.value)" style="font-size:10px;padding:3px 5px">'+
+        '<option value="SIN PAGO"'+(r.estadoPago!=='PAGADA'?' selected':'')+'>⏳ Pdte</option>'+
+        '<option value="PAGADA"'+(r.estadoPago==='PAGADA'?' selected':'')+'>✅ Pagó</option>'+
+      '</select>':'<span style="color:#334155;font-size:10px">N/A</span>')+'</td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+  document.getElementById('td').innerHTML=h;
+}
+
+function upd(id,f,v){var r=DATA.find(function(x){return x.id===id;});if(r){r[f]=v;if(cu.r==='sup')rSup();else rAs();}}
+function updE(id,v){upd(id,'estado',v);}
+
+// ── ASESOR
+function initAs(){
+  document.getElementById('ahn').textContent=cu.n;
+  var hoy=new Date();
+  document.getElementById('ff').value=hoy.getFullYear()+'-'+String(hoy.getMonth()+1).padStart(2,'0')+'-'+String(hoy.getDate()).padStart(2,'0');
+  rAs();
+}
+function rAs(){
+  var n=cu.n,mis=DATA.filter(function(r){return r.asesor===n;});
+  var act=mis.filter(ea),nA=act.length,fac=act.reduce(function(s,r){return s+(r.valorSinIva||0);},0);
+  var pA=Math.min(Math.round(nA/META_A*100),100),pF=Math.min(Math.round(fac/META_F*100),100);
+  var pC=mis.length>0?Math.round(nA/mis.length*100):0;
+  var bA=pA>=100?'#4ade80':pA>=70?'#facc15':'#f87171',bF=pF>=100?'#4ade80':pF>=70?'#facc15':'#f87171';
+  document.getElementById('am').innerHTML=
+    '<div class="mc"><div class="ml">🎯 Meta ventas activas</div>'+
+    '<div class="mn"><div class="ma" style="color:'+bA+'">'+nA+'</div>'+
+    '<div class="mt">/ '+META_A+' activas</div><div class="mp" style="color:'+bA+'">'+pA+'%</div></div>'+
+    '<div class="eb"><div class="ef" style="width:'+pA+'%;background:'+bA+'"></div></div>'+
+    '<div style="font-size:10px;color:#475569;margin-top:5px">'+(nA>=META_A?'✅ ¡Meta alcanzada!':'Faltan '+(META_A-nA)+' ventas')+'</div></div>'+
+    '<div class="mc"><div class="ml">💰 Meta facturación (sin IVA)</div>'+
+    '<div class="mn"><div class="ma" style="color:'+bF+';font-size:20px">$'+Math.round(fac).toLocaleString('es-CO')+'</div>'+
+    '<div class="mt">/ $2.300.000</div><div class="mp" style="color:'+bF+'">'+pF+'%</div></div>'+
+    '<div class="eb"><div class="ef" style="width:'+pF+'%;background:'+bF+'"></div></div>'+
+    '<div style="font-size:10px;color:#475569;margin-top:5px">'+(fac>=META_F?'✅ ¡Meta de factura alcanzada!':'Faltan $'+Math.round(META_F-fac).toLocaleString('es-CO'))+'</div></div>';
+  var tr=mis.filter(function(r){return r.estado==='EN TRANSITO';}).length;
+  var ab=mis.filter(function(r){return r.estado==='Esperando respuesta de ABD';}).length;
+  var ti=mis.filter(function(r){return r.estado==='PEDIDO EN TIENDA';}).length;
+  document.getElementById('ak').innerHTML=
+    '<div class="kpi bl"><div class="n">'+mis.length+'</div><div class="l">Mis pedidos</div></div>'+
+    '<div class="kpi gr"><div class="n">'+nA+'</div><div class="l">Activas</div></div>'+
+    '<div class="kpi ye"><div class="n">'+tr+'</div><div class="l">En tránsito</div></div>'+
+    '<div class="kpi or"><div class="n">'+ti+'</div><div class="l">En tienda</div></div>'+
+    '<div class="kpi pu"><div class="n">'+pC+'%</div><div class="l">Conversión</div></div>';
+  if(mis.length===0){document.getElementById('mpb').innerHTML='<div style="padding:20px;text-align:center;color:#475569">No tienes pedidos aún. Usa "Registrar venta".</div>';return;}
+  var h='<table><thead><tr>'+
+    '<th>Tipo</th><th>Entrega</th><th>Estado</th><th>Procede</th>'+
+    '<th>N° Orden</th><th>Línea</th><th>Fecha</th><th>Con IVA</th><th>Sin IVA</th><th>¿Pagó?</th>'+
+    '</tr></thead><tbody>';
+  mis.forEach(function(r){
+    var isNL=r.tipo==='LINEA NUEVA',nP=r.resultado&&r.resultado.toLowerCase().indexOf('no procede')>=0;
+    h+='<tr>'+
+      '<td><span class="bd bb" style="font-size:9px">'+(isNL?'NL'+(r.estadoPago==='PAGADA'?' ✅':' ⏳'):r.tipo.slice(0,4))+'</span></td>'+
+      '<td><select onchange="upd('+r.id+',\'tipoEntrega\',this.value)" style="font-size:10px;padding:3px 5px">'+
+        '<option value="">—</option>'+
+        '<option value="esim"'+(r.tipoEntrega==='esim'?' selected':'')+'>📱 eSIM</option>'+
+        '<option value="tienda"'+(r.tipoEntrega==='tienda'?' selected':'')+'>🏪 Tienda</option>'+
+        '<option value="domicilio"'+(r.tipoEntrega==='domicilio'?' selected':'')+'>🚚 Dom.</option>'+
+      '</select></td>'+
+      '<td><select onchange="updE('+r.id+',this.value)" style="font-size:10px;padding:3px 5px;min-width:115px;border-color:'+(EC[r.estado]||'#334155')+';color:'+(EC[r.estado]||'#e2e8f0')+'">'+
+        ESTS.map(function(e){return'<option value="'+e+'"'+(e===r.estado?' selected':'')+'>'+(EL[e]||e)+'</option>';}).join('')+
+      '</select>'+(r.estado==='Esperando respuesta de ABD'?'<div class="aw2" style="font-size:10px">🔑 Cliente pide NIP nuevo al operador</div>':'')+'</td>'+
+      '<td><select onchange="upd('+r.id+',\'resultado\',this.value)" style="font-size:10px;padding:3px 5px">'+
+        '<option value="Procede"'+(!nP?' selected':'')+'>✅ Sí</option>'+
+        '<option value="No Procede"'+(nP?' selected':'')+'>❌ No</option>'+
+      '</select></td>'+
+      '<td style="font-family:IBM Plex Mono,monospace;color:#64748b;font-size:10px">'+(r.nOrden||'—')+'</td>'+
+      '<td style="font-family:IBM Plex Mono,monospace;color:#475569;font-size:10px">'+(r.linea||'—')+'</td>'+
+      '<td style="color:#475569;white-space:nowrap;font-size:10px">'+(r.fecha||'—')+'</td>'+
+      '<td style="text-align:right;font-family:IBM Plex Mono,monospace;color:#94a3b8;font-size:10px">'+(r.valorIva?'$'+Number(r.valorIva).toLocaleString('es-CO'):'—')+'</td>'+
+      '<td style="text-align:right;font-family:IBM Plex Mono,monospace;color:#64748b;font-size:10px">'+(r.valorSinIva?'$'+Number(r.valorSinIva).toLocaleString('es-CO'):'—')+'</td>'+
+      '<td>'+(isNL?'<select onchange="upd('+r.id+',\'estadoPago\',this.value)" style="font-size:10px;padding:3px 5px">'+
+        '<option value="SIN PAGO"'+(r.estadoPago!=='PAGADA'?' selected':'')+'>⏳ Pdte</option>'+
+        '<option value="PAGADA"'+(r.estadoPago==='PAGADA'?' selected':'')+'>✅ Pagó</option>'+
+      '</select>':'<span style="color:#334155;font-size:10px">N/A</span>')+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById('mpb').innerHTML=h;
+}
+function stAs(id,el){
+  document.querySelectorAll('#aa .tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#aa .sec').forEach(function(s){s.classList.remove('active');});
   el.classList.add('active');document.getElementById(id).classList.add('active');
 }
 
-// ══════════════════ GUARDAR EN SHEETS ══════════════════
-async function guardarCampo(rowId, field, value){
-  // Actualizar en memoria inmediatamente
-  const r=DATA.find(x=>x.id===rowId);
-  if(r) r[field]=value;
-  if(currentUser?.role==='supervisor') renderSup(); else renderAsesor();
-  // Guardar en Sheets
-  await apiCall({action:'updateField', rowId, field, value});
-}
-
-async function guardarEstado(rowId, value){
-  await guardarCampo(rowId,'estado',value);
-}
-
-async function guardarPago(rowId, value){
-  await guardarCampo(rowId,'estadoPago',value);
-}
-
-// ══════════════════ NUEVO PEDIDO ══════════════════
-function onTipoChange(){
-  document.getElementById('fg-procede').style.display=document.getElementById('f-tipo').value==='MIGRACIÓN'?'flex':'none';
-}
-function onEntregaChange(){
-  const e=document.getElementById('f-entrega').value, box=document.getElementById('tip-entrega');
+// ── NUEVO PEDIDO
+function onTc(){document.getElementById('fgp').style.display=document.getElementById('ftp').value==='MIGRACIÓN'?'flex':'none';}
+function onEc(){
+  var e=document.getElementById('fte').value,box=document.getElementById('tet');
   if(!e){box.style.display='none';return;}
-  const tips={
-    esim:`<div class="tip-box tip-esim"><div style="font-size:10px;font-weight:600;color:#38bdf8;margin-bottom:4px">📱 eSIM</div><ul>
-      <li>Verificar el correo letra por letra</li>
-      <li>El cliente escanea el QR <strong>después</strong> de que se desactive su línea</li>
-      <li>Confirmar compatibilidad e internet disponible</li></ul></div>`,
-    tienda:`<div class="tip-box tip-tienda"><div style="font-size:10px;font-weight:600;color:#fbbf24;margin-bottom:4px">🏪 En tienda</div><ul>
-      <li>Dar el <strong>número de pedido exacto</strong></li>
-      <li>Cédula original · 48 horas hábiles</li></ul></div>`,
-    domicilio:`<div class="tip-box tip-domicilio"><div style="font-size:10px;font-weight:600;color:#c084fc;margin-bottom:4px">🚚 Domicilio</div><ul>
-      <li>Confirmar dirección completa con referencia</li>
-      <li><strong>Seguimiento diario</strong> hasta entrega</li></ul></div>`
+  var tips={
+    esim:'<div class="te tesim"><div style="font-size:10px;font-weight:600;color:#38bdf8;margin-bottom:4px">📱 eSIM</div><ul>'+
+      '<li>Verificar correo letra por letra</li>'+
+      '<li>El cliente escanea el QR <strong>después</strong> de desactivar su línea</li>'+
+      '<li>Confirmar compatibilidad e internet disponible</li></ul></div>',
+    tienda:'<div class="te ttie"><div style="font-size:10px;font-weight:600;color:#fbbf24;margin-bottom:4px">🏪 En tienda</div><ul>'+
+      '<li>Dar el <strong>número de pedido exacto</strong></li>'+
+      '<li>Cédula original · 48 horas hábiles</li></ul></div>',
+    domicilio:'<div class="te tdom"><div style="font-size:10px;font-weight:600;color:#c084fc;margin-bottom:4px">🚚 Domicilio</div><ul>'+
+      '<li>Confirmar dirección completa con referencia</li>'+
+      '<li><strong>Seguimiento diario</strong> hasta entrega</li></ul></div>'
   };
   box.innerHTML=tips[e]||'';box.style.display='block';
 }
-function calcSinIva(){
-  const v=parseFloat(document.getElementById('f-viva').value);
-  document.getElementById('f-siva').value=isNaN(v)?'':(v*0.81).toFixed(1);
+function csi(){var v=parseFloat(document.getElementById('fvi').value);document.getElementById('fsi').value=isNaN(v)?'':(v*0.81).toFixed(1);}
+function gp(){
+  var tr=document.getElementById('ftp').value,en=document.getElementById('fte').value;
+  if(!tr||!en){msg('⚠️ Selecciona tipo de pedido y tipo de entrega.','e');return;}
+  var tp='',st='',ep='FACTURA 0 PESOS';
+  if(tr==='PORTABILIDAD')tp='PORTABILIDAD';
+  else if(tr==='MIGRACIÓN')tp='MIGRACIÓN';
+  else{tp='LINEA NUEVA';st='pendiente';ep='SIN PAGO';}
+  var hoy=new Date(),fi=document.getElementById('ff').value;
+  var fe=fi?fi.split('-').reverse().join('/'):(String(hoy.getDate()).padStart(2,'0')+'/'+String(hoy.getMonth()+1).padStart(2,'0')+'/'+hoy.getFullYear());
+  var vi=document.getElementById('fvi').value;
+  DATA.push({id:nextId++,tipo:tp,subTipo:st,estado:'En Progreso',
+    resultado:document.getElementById('fpr').value||'Procede',
+    tipoEntrega:en,nOrden:document.getElementById('for').value||'',
+    linea:document.getElementById('fli').value||'',asesor:cu.n,fecha:fe,estadoPago:ep,
+    valorIva:vi?parseFloat(vi):null,valorSinIva:vi?parseFloat((parseFloat(vi)*0.81).toFixed(1)):null,isNew:true});
+  rAs();msg('✅ Venta registrada. Estado: En Progreso.','o');
+  lf();stAs('mpt',document.querySelector('#aa .tab'));
 }
-async function guardarPedido(){
-  const tipoRaw=document.getElementById('f-tipo').value;
-  const entrega=document.getElementById('f-entrega').value;
-  if(!tipoRaw||!entrega){mostrarMsg('⚠️ Selecciona tipo de pedido y tipo de entrega.','err');return;}
-  let tipo='',subTipo='',estadoPago='FACTURA 0 PESOS';
-  if(tipoRaw==='PORTABILIDAD')tipo='PORTABILIDAD';
-  else if(tipoRaw==='MIGRACIÓN')tipo='MIGRACIÓN';
-  else{tipo='LINEA NUEVA';subTipo='pendiente';estadoPago='SIN PAGO';}
-  const hoy=new Date(),fi=document.getElementById('f-fecha').value;
-  const fecha=fi?fi.split('-').reverse().join('/'):`${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
-  const viva=document.getElementById('f-viva').value;
-  const pedido={
-    tipo,subTipo,estado:'En Progreso',
-    resultado:document.getElementById('f-procede').value||'Procede',
-    tipoEntrega:entrega,
-    nOrden:document.getElementById('f-orden').value||'',
-    linea:document.getElementById('f-linea').value||'',
-    asesor:currentUser.nombre,fecha,estadoPago,
-    valorIva:viva?parseFloat(viva):null,
-    valorSinIva:viva?parseFloat((parseFloat(viva)*0.81).toFixed(1)):null
-  };
-  const res = await apiCall({action:'addPedido',pedido});
-  if(res.status==='ok'){
-    pedido.id = res.rowId || Date.now();
-    DATA.push(pedido);
-    renderAsesor();
-    mostrarMsg('✅ Venta registrada y guardada en Sheets.','ok');
-    limpiarForm();
-    switchTabAs('mis-pedidos-tab',document.querySelector('#asesor-app .tab'));
-  } else {
-    mostrarMsg('⚠️ Error al guardar: '+res.message,'err');
-  }
+function lf(){
+  ['ftp','fte','fpr'].forEach(function(id){document.getElementById(id).value='';});
+  ['for','fli','fvi','fsi'].forEach(function(id){document.getElementById(id).value='';});
+  document.getElementById('fgp').style.display='none';document.getElementById('tet').style.display='none';
 }
-function limpiarForm(){
-  ['f-tipo','f-entrega','f-procede'].forEach(id=>document.getElementById(id).value='');
-  ['f-orden','f-linea','f-viva','f-siva'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fg-procede').style.display='none';
-  document.getElementById('tip-entrega').style.display='none';
+function msg(t,tp){
+  var d=document.getElementById('fm');d.className=tp==='o'?'mok':'mer';d.textContent=t;d.style.display='block';
+  setTimeout(function(){d.style.display='none';},4000);
 }
-function mostrarMsg(t,tipo){
-  const d=document.getElementById('f-msg');
-  d.className=tipo==='ok'?'msg-ok':'msg-err';d.textContent=t;d.style.display='block';
-  setTimeout(()=>d.style.display='none',4000);
-}
+
 </script>
 </body>
 </html>
